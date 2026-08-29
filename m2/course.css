@@ -1,0 +1,176 @@
+
+:root {
+  --bg: #f7f4e9;
+  --ink: #263640;
+  --muted: #64757d;
+  --accent: #196aa3;
+  --card: #ffffff;
+  --line: #d5dddd;
+  --code: #f2ebd9;
+}
+
+.reveal {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  color: var(--ink);
+  text-transform: none;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.reveal h1 { font-size: 3.0em; }
+.reveal h2 { font-size: 2.15em; }
+.reveal h3 { font-size: 1.35em; }
+
+.reveal p,
+.reveal li,
+.reveal td,
+.reveal th,
+.reveal label {
+  font-size: 0.95em;
+  line-height: 1.46;
+}
+
+.reveal li {
+  margin: 0.24em 0;
+}
+
+.reveal .title-slide {
+  height: 100%;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 8%;
+  background:
+    linear-gradient(135deg, #fbf8ef 0%, #f7f4e9 62%, #eef4f6 100%);
+}
+
+.reveal .title-slide h1 {
+  font-size: 3.4em;
+  margin-bottom: 0.5em;
+}
+
+.title-meta {
+  display: flex;
+  gap: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(76,101,114,.22);
+  font-size: 1.2em;
+  color: #52656f;
+}
+
+.title-meta div + div::before {
+  content: "•";
+  margin-right: 2rem;
+  color: var(--accent);
+}
+
+.runner {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 0.85rem 1rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,.05);
+}
+
+.runner-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.small {
+  font-size: 0.8em !important;
+  color: var(--muted);
+}
+
+.btn {
+  border: 0;
+  border-radius: 9px;
+  padding: 0.55rem 0.85rem;
+  background: #e6ecef;
+  color: #12222a;
+  cursor: pointer;
+  font-size: 0.78em;
+  margin-left: 0.2rem;
+}
+
+.btn.primary {
+  background: var(--accent);
+  color: white;
+}
+
+.CodeMirror {
+  height: 290px;
+  border: 1px solid #d7ceb6;
+  border-radius: 10px;
+  font-size: 18px;
+  line-height: 1.4;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.output-title {
+  font-size: 0.78em;
+  font-weight: 700;
+  margin: 0.55rem 0 0.2rem;
+}
+
+.output {
+  min-height: 95px;
+  max-height: 190px;
+  overflow: auto;
+  background: #0f1720 !important;
+  color: #d8f0d6 !important;
+  border-radius: 10px;
+  padding: 0.75rem !important;
+  font-size: 0.75em !important;
+  white-space: pre-wrap;
+}
+
+.loading {
+  color: #8a6217 !important;
+  background: #fff4d6 !important;
+}
+
+.error {
+  color: #8b1d1d !important;
+  background: #fde8e8 !important;
+}
+
+.success {
+  color: #d8f0d6 !important;
+}
+
+.reveal table {
+  font-size: 0.82em;
+}
+
+.reveal table th,
+.reveal table td {
+  padding: 0.55em 0.65em;
+}
+
+.reveal .callout {
+  font-size: 0.82em;
+}
+
+.reveal .controls,
+.reveal .progress {
+  color: var(--accent);
+}
+
+@media (max-width: 1000px) {
+  .CodeMirror { height: 250px; font-size: 16px; }
+  .title-meta { flex-direction: column; gap: .35rem; }
+  .title-meta div + div::before { content: ""; margin: 0; }
+}
