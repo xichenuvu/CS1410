@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Classes and Objects — Interactive Web Slides V2</title>
+  <style>
+:root{
+  --bg:#f7f4e9;
+  --ink:#263640;
+  --muted:#64757d;
+  --accent:#196aa3;
+  --accent2:#0f8a6d;
+  --card:#ffffff;
+  --line:#d5dddd;
+  --soft:#edf4f7;
+  --code:#f2ebd9;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Arial, Helvetica, sans-serif;
+  overflow:hidden;
+}
+.deck{height:100vh;width:100vw;position:relative}
+.slide{
+  display:none;
+  width:100vw;
+  height:100vh;
+  overflow:auto;
+  padding:5vh 6vw 8vh;
+}
+.slide.active{display:block}
+h1{font-size:3.1rem;margin:.1rem 0 .4rem}
+h2{font-size:2.35rem;margin:.2rem 0 .8rem}
+h3{font-size:1.35rem;margin:.2rem 0 .5rem}
+p,li,td,th,label{font-size:1.18rem;line-height:1.48}
+ul{max-width:1100px}
+code, pre, textarea{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+pre{
+  background:var(--code);
+  border:1px solid #ddd4bb;
+  border-radius:12px;
+  padding:1rem 1.1rem;
+  overflow:auto;
+  font-size:1rem;
+}
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1.3rem;
+  align-items:start;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:1rem 1.1rem;
+  box-shadow:0 8px 24px rgba(0,0,0,.05);
+}
+.note{
+  background:#edf5fb;
+  border-left:5px solid var(--accent);
+  border-radius:12px;
+  padding:.9rem 1rem;
+  max-width:1000px;
+}
+.small{font-size:.96rem;color:var(--muted)}
+.runner{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:1rem;
+  box-shadow:0 8px 24px rgba(0,0,0,.05);
+}
+.runner-head{
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  align-items:flex-start;
+}
+.runner-actions{
+  white-space:nowrap;
+}
+.codebox{
+  width:100%;
+  min-height:280px;
+  resize:vertical;
+  border:1px solid #d7ceb6;
+  background:var(--code);
+  border-radius:12px;
+  padding:1rem;
+  font-size:1rem;
+  line-height:1.45;
+}
+.output-wrap{
+  margin-top:.8rem;
+}
+.output-title{
+  font-size:1rem;
+  font-weight:700;
+  margin-bottom:.3rem;
+}
+.output{
+  min-height:130px;
+  background:#0f1720;
+  color:#d8f0d6;
+  border-radius:12px;
+  padding:1rem;
+  font-size:1rem;
+  white-space:pre-wrap;
+}
+.btn{
+  border:0;
+  border-radius:10px;
+  padding:.7rem 1rem;
+  background:#e6ecef;
+  color:#12222a;
+  cursor:pointer;
+  font-size:1rem;
+  margin:.18rem;
+}
+.btn.primary{
+  background:var(--accent);
+  color:#fff;
+}
+.btn:disabled{
+  opacity:.6;
+  cursor:wait;
+}
+.footer{
+  position:fixed;
+  left:0;right:0;bottom:12px;
+  text-align:center;
+  color:#6c7a80;
+  font-size:.95rem;
+  pointer-events:none;
+}
+.nav{
+  position:fixed;
+  right:16px;
+  bottom:10px;
+  z-index:10;
+}
+.progress{
+  position:fixed;
+  left:0;
+  bottom:0;
+  height:4px;
+  background:var(--accent);
+  width:0;
+  transition:width .2s;
+}
+table{
+  border-collapse:collapse;
+  width:100%;
+  background:white;
+}
+th,td{
+  border:1px solid #ccd7dc;
+  padding:.75rem;
+  text-align:left;
+}
+.obj{
+  border:2px solid #9eb7c0;
+  border-radius:12px;
+  padding:.75rem .9rem;
+  background:white;
+  margin:.55rem 0;
+}
+.ref{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  margin:.4rem 0;
+}
+.pill{
+  display:inline-block;
+  background:#e6eef6;
+  border-radius:999px;
+  padding:.25rem .6rem;
+  margin:.15rem;
+}
+.highlight{
+  background:#fff0a8;
+  padding:.08rem .25rem;
+  border-radius:5px;
+}
+.status{
+  display:inline-block;
+  padding:.25rem .55rem;
+  border-radius:999px;
+  background:#eaf5ea;
+  color:#275c27;
+  margin-left:.6rem;
+  font-size:.95rem;
+}
+.loading{
+  color:#8a6217;
+  background:#fff4d6;
+}
+.error{
+  color:#8b1d1d;
+  background:#fde8e8;
+}
+.success{
+  color:#1e5d1e;
+  background:#e9f7e9;
+}
+@media (max-width: 1000px){
+  .grid{grid-template-columns:1fr}
+  h1{font-size:2.4rem}
+  h2{font-size:2rem}
+  p,li,td,th,label{font-size:1.05rem}
+  .codebox{min-height:240px}
+}
+</style>
+</head>
+<body>
+  <div class="deck">
+    
+<section class="slide active">
+  <h1>Classes and Objects</h1>
+  <h3>Interactive Web Slides — Full Version</h3>
+  <p>Converted from the original lecture deck into a browser-based, interactive lesson.</p>
+  <div class="note">
+    <p><b>What is new in this version?</b></p>
+    <ul>
+      <li>Many slides now contain editable Python code.</li>
+      <li>Students can run examples directly in the page.</li>
+      <li>Copy behavior, object lifetime, and class variables also have visual interactions.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Objectives</h2>
+  <ul>
+    <li>Determine the attributes and behavior of types of objects required by a program</li>
+    <li>List the methods, including parameters and return types, that realize class behavior</li>
+    <li>Choose appropriate data structures to represent class attributes</li>
+    <li>Define constructors, instance variables, and methods</li>
+    <li>Recognize the need for class variables (vs. instance data)</li>
+    <li>Define <code>__str__</code> so an object has a readable string representation</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Creating New Types</h2>
+  <div class="grid">
+    <div>
+      <ul>
+        <li>A class is a blueprint for objects.</li>
+        <li>Classes contain data and methods.</li>
+        <li>Objects are created by <b>instantiation</b>.</li>
+        <li>The constructor is usually <code>__init__</code>.</li>
+      </ul>
+    </div>
+    <div>
+      
+    <div class="runner">
+      <div class="runner-head">
+        <div>
+          <h3>Try a simple Person class</h3>
+          <p class="small">This first example just creates one object and prints its attributes.</p>
+        </div>
+        <div class="runner-actions">
+          <button class="btn primary" onclick="runPython('person_intro')">Run</button>
+          <button class="btn" onclick="resetCode('person_intro')">Reset</button>
+        </div>
+      </div>
+      <textarea id="person_intro_code" class="codebox" spellcheck="false">class Person:
+    def __init__(self, first, last, age):
+        self.first = first
+        self.last = last
+        self.age = age
+
+p = Person(&quot;Harry&quot;, &quot;Potter&quot;, 17)
+print(p.first, p.last, p.age)</textarea>
+      <input type="hidden" id="person_intro_starter" value="class Person:
+    def __init__(self, first, last, age):
+        self.first = first
+        self.last = last
+        self.age = age
+
+p = Person(&quot;Harry&quot;, &quot;Potter&quot;, 17)
+print(p.first, p.last, p.age)">
+      <div class="output-wrap">
+        <div class="output-title">Output</div>
+        <pre id="person_intro_out" class="output">Click Run to execute this Python code in the browser.</pre>
+      </div>
+    </div>
+    
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Person class</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Data</h3>
+      <p>first name, last name, age</p>
+      <h3>Operations</h3>
+      <p><code>__init__</code>, <code>__str__</code>, <code>fullname</code>, <code>email</code></p>
+    </div>
+    <div>
+      
+    <div class="runner">
+      <div class="runner-head">
+        <div>
+          <h3>Build methods for Person</h3>
+          <p class="small">Edit the code, then click Run.</p>
+        </div>
+        <div class="runner-actions">
+          <button class="btn primary" onclick="runPython('person_class')">Run</button>
+          <button class="btn" onclick="resetCode('person_class')">Reset</button>
+        </div>
+      </div>
+      <textarea id="person_class_code" class="codebox" spellcheck="false">class Person:
+    def __init__(self, first, last, age):
+        self.first = first
+        self.last = last
+        self.age = age
+
+    def fullname(self):
+        return f&quot;{self.first} {self.last}&quot;
+
+    def email(self):
+        return f&quot;{self.first.lower()}.{self.last.lower()}@uvu.edu&quot;
+
+    def __str__(self):
+        return f&quot;{self.fullname()} ({self.age})&quot;
+
+p = Person(&quot;Harry&quot;, &quot;Potter&quot;, 17)
+print(p)
+print(p.fullname())
+print(p.email())</textarea>
+      <input type="hidden" id="person_class_starter" value="class Person:
+    def __init__(self, first, last, age):
+        self.first = first
+        self.last = last
+        self.age = age
+
+    def fullname(self):
+        return f&quot;{self.first} {self.last}&quot;
+
+    def email(self):
+        return f&quot;{self.first.lower()}.{self.last.lower()}@uvu.edu&quot;
+
+    def __str__(self):
+        return f&quot;{self.fullname()} ({self.age})&quot;
+
+p = Person(&quot;Harry&quot;, &quot;Potter&quot;, 17)
+print(p)
+print(p.fullname())
+print(p.email())">
+      <div class="output-wrap">
+        <div class="output-title">Output</div>
+        <pre id="person_class_out" class="output">Click Run to execute this Python code in the browser.</pre>
+      </div>
+    </div>
+    
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>PersonList</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Data</h3>
+      <p>A list that stores Person objects</p>
+      <h3>Operations</h3>
+      <p><code>add(self, person_obj)</code>, <code>__str__(self)</code></p>
+    </div>
+    <div>
+      
+    <div class="runner">
+      <div class="runner-head">
+        <div>
+          <h3>Store Person objects in a list</h3>
+          <p class="small">Students can modify the list contents and see how __str__ works.</p>
+        </div>
+        <div class="runner-actions">
+          <button class="btn primary" onclick="runPython('person_list')">Run</button>
+          <button class="btn" onclick="resetCode('person_list')">Reset</button>
+        </div>
+      </div>
+      <textarea id="person_list_code" class="codebox" spellcheck="false">class Person:
+    def __init__(self, first, last, age):
+        self.first = first
+        self.last = last
+        self.age = age
+
+    def __str__(self):
+        return f&quot;{self.first} {self.last} ({self.age})&quot;
+
+class PersonList:
+    def __init__(self):
+        self.people = []
+
+    def add(self, person_obj):
+        self.people.append(person_obj)
+
+    def __str__(self):
+        return &quot;\n&quot;.join(str(p) for p in self.people)
+
+group = PersonList()
+group.add(Person(&quot;Hope&quot;, &quot;Smith&quot;, 20))
+group.add(Person(&quot;Jack&quot;, &quot;Jones&quot;, 19))
+print(group)</textarea>
+      <input type="hidden" id="person_list_starter" value="class Person:
+    def __init__(self, first, last, age):
+        self.first = first
+        self.last = last
+        self.age = age
+
+    def __str__(self):
+        return f&quot;{self.first} {self.last} ({self.age})&quot;
+
+class PersonList:
+    def __init__(self):
+        self.people = []
+
+    def add(self, person_obj):
+        self.people.append(person_obj)
+
+    def __str__(self):
+        return &quot;\n&quot;.join(str(p) for p in self.people)
+
+group = PersonList()
+group.add(Person(&quot;Hope&quot;, &quot;Smith&quot;, 20))
+group.add(Person(&quot;Jack&quot;, &quot;Jones&quot;, 19))
+print(group)">
+      <div class="output-wrap">
+        <div class="output-title">Output</div>
+        <pre id="person_list_out" class="output">Click Run to execute this Python code in the browser.</pre>
+      </div>
+    </div>
+    
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Separate Person and PersonList into Different Files</h2>
+  <pre>from person import Person
+from person_list import PersonList</pre>
+  <p><code>from person import Person</code> means: from <code>person.py</code>, import the <code>Person</code> class.</p>
+  <p><code>from person_list import PersonList</code> means: from <code>person_list.py</code>, import the <code>PersonList</code> class.</p>
+  <div class="note">
+    In this web lesson, examples are kept in one code box for convenience, but in real projects we often place classes in different files.
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Shallow Copy vs Deep Copy</h2>
+  <p>A <b>shallow copy</b> copies the object, but nested mutable attributes may still be shared.</p>
+  <p>A <b>deep copy</b> copies the object and nested objects too.</p>
+  <p>Next: run the code and compare the output.</p>
+</section>
+
+<section class="slide">
+  <h2>Interactive: Shallow Copy vs Deep Copy</h2>
+  <div class="grid">
+    <div>
+      
+    <div class="runner">
+      <div class="runner-head">
+        <div>
+          <h3>Run the copy example</h3>
+          <p class="small">Try changing which object is mutated, or add print(id(...)) to compare object identities.</p>
+        </div>
+        <div class="runner-actions">
+          <button class="btn primary" onclick="runPython('copy_run')">Run</button>
+          <button class="btn" onclick="resetCode('copy_run')">Reset</button>
+        </div>
+      </div>
+      <textarea id="copy_run_code" class="codebox" spellcheck="false">from copy import copy, deepcopy
+
+class Person:
+    def __init__(self, first, last, age, courses=None):
+        self.first = first
+        self.last = last
+        self.age = age
+        self.courses = [] if courses is None else courses
+
+    def __str__(self):
+        return f&quot;{self.first} {self.last}: {self.courses}&quot;
+
+p1 = Person(&quot;Hope&quot;, &quot;Smith&quot;, 2, [&quot;CS1410&quot;, &quot;CS2420&quot;])
+
+p2 = p1
+p3 = copy(p1)
+p4 = deepcopy(p1)
+
+p2.first = &quot;Jack&quot;
+p3.courses[0] = &quot;CS1400&quot;
+p4.courses[0] = &quot;CS1030&quot;
+
+print(&quot;p1:&quot;, p1)
+print(&quot;p2:&quot;, p2)
+print(&quot;p3:&quot;, p3)
+print(&quot;p4:&quot;, p4)</textarea>
+      <input type="hidden" id="copy_run_starter" value="from copy import copy, deepcopy
+
+class Person:
+    def __init__(self, first, last, age, courses=None):
+        self.first = first
+        self.last = last
+        self.age = age
+        self.courses = [] if courses is None else courses
+
+    def __str__(self):
+        return f&quot;{self.first} {self.last}: {self.courses}&quot;
+
+p1 = Person(&quot;Hope&quot;, &quot;Smith&quot;, 2, [&quot;CS1410&quot;, &quot;CS2420&quot;])
+
+p2 = p1
+p3 = copy(p1)
+p4 = deepcopy(p1)
+
+p2.first = &quot;Jack&quot;
+p3.courses[0] = &quot;CS1400&quot;
+p4.courses[0] = &quot;CS1030&quot;
+
+print(&quot;p1:&quot;, p1)
+print(&quot;p2:&quot;, p2)
+print(&quot;p3:&quot;, p3)
+print(&quot;p4:&quot;, p4)">
+      <div class="output-wrap">
+        <div class="output-title">Output</div>
+        <pre id="copy_run_out" class="output">Click Run to execute this Python code in the browser.</pre>
+      </div>
+    </div>
+    
+    </div>
+    <div class="card">
+      <h3>Visual memory model</h3>
+      <button class="btn primary" onclick="copyDemo('alias')">p2 = p1</button>
+      <button class="btn" onclick="copyDemo('shallow')">p3 = copy(p1)</button>
+      <button class="btn" onclick="copyDemo('deep')">p4 = deepcopy(p1)</button>
+      <button class="btn" onclick="copyDemo('mutate')">Mutate shared list</button>
+      <button class="btn" onclick="copyDemo('reset')">Reset</button>
+      <div id="copyViz" style="margin-top:1rem"></div>
+      <p id="copyMsg" class="small"></p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Some Object-Oriented Terms</h2>
+  <ul>
+    <li><b>Class</b>: a type; an abstraction of related objects</li>
+    <li><b>Instance/Object</b>: a unique object containing its own data</li>
+    <li><b>Attribute</b>: a data element inside an instance</li>
+    <li><b>Method</b>: a function that operates on an instance</li>
+    <li><b>Interface</b>: the collection of methods defined by a class</li>
+    <li><b>State</b>: the current values in the attributes of an instance</li>
+    <li><b>Instantiation</b>: creating an object from a class</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>The Interface of Student class</h2>
+  <table>
+    <tr><th>Method</th><th>What It Does</th></tr>
+    <tr><td><code>Student(name, number)</code></td><td>Returns a Student object with the given name and number of scores. Each score is initially 0.</td></tr>
+    <tr><td><code>get_name()</code></td><td>Returns the student’s name</td></tr>
+    <tr><td><code>get_score(i)</code></td><td>Returns the student’s ith score</td></tr>
+    <tr><td><code>set_score(i, score)</code></td><td>Resets the student’s ith score</td></tr>
+    <tr><td><code>get_average()</code></td><td>Returns the student’s average score</td></tr>
+    <tr><td><code>get_high_score()</code></td><td>Returns the student’s highest score</td></tr>
+    <tr><td><code>__str__()</code></td><td>Returns a string representation of the student’s information</td></tr>
+  </table>
+</section>
+
+<section class="slide">
+  <h2>Example: Using Student Class</h2>
+  
+    <div class="runner">
+      <div class="runner-head">
+        <div>
+          <h3>Use a Student object</h3>
+          <p class="small">This slide matches the intended use case of the Student class.</p>
+        </div>
+        <div class="runner-actions">
+          <button class="btn primary" onclick="runPython('student_use')">Run</button>
+          <button class="btn" onclick="resetCode('student_use')">Reset</button>
+        </div>
+      </div>
+      <textarea id="student_use_code" class="codebox" spellcheck="false">class Student:
+    def __init__(self, name, number):
+        self.name = name
+        self.scores = [0] * number
+
+    def get_name(self):
+        return self.name
+
+    def get_score(self, i):
+        return self.scores[i - 1]
+
+    def set_score(self, i, score):
+        self.scores[i - 1] = score
+
+    def get_average(self):
+        return sum(self.scores) / len(self.scores)
+
+    def get_high_score(self):
+        return max(self.scores)
+
+    def __str__(self):
+        score_text = &quot; &quot;.join(str(s) for s in self.scores)
+        return f&quot;Name: {self.name}\nScores: {score_text}&quot;
+
+s = Student(&quot;Maria&quot;, 5)
+print(s)
+s.set_score(1, 100)
+print()
+print(s)
+print(&quot;high score:&quot;, s.get_high_score())
+print(&quot;average:&quot;, s.get_average())
+print(&quot;first score:&quot;, s.get_score(1))
+print(&quot;name:&quot;, s.get_name())</textarea>
+      <input type="hidden" id="student_use_starter" value="class Student:
+    def __init__(self, name, number):
+        self.name = name
+        self.scores = [0] * number
+
+    def get_name(self):
+        return self.name
+
+    def get_score(self, i):
+        return self.scores[i - 1]
+
+    def set_score(self, i, score):
+        self.scores[i - 1] = score
+
+    def get_average(self):
+        return sum(self.scores) / len(self.scores)
+
+    def get_high_score(self):
+        return max(self.scores)
+
+    def __str__(self):
+        score_text = &quot; &quot;.join(str(s) for s in self.scores)
+        return f&quot;Name: {self.name}\nScores: {score_text}&quot;
+
+s = Student(&quot;Maria&quot;, 5)
+print(s)
+s.set_score(1, 100)
+print()
+print(s)
+print(&quot;high score:&quot;, s.get_high_score())
+print(&quot;average:&quot;, s.get_average())
+print(&quot;first score:&quot;, s.get_score(1))
+print(&quot;name:&quot;, s.get_name())">
+      <div class="output-wrap">
+        <div class="output-title">Output</div>
+        <pre id="student_use_out" class="output">Click Run to execute this Python code in the browser.</pre>
+      </div>
+    </div>
+    
+</section>
+
+<section class="slide">
+  <h2>Method Definitions</h2>
+  <ul>
+    <li>Method definitions are indented under the class statement.</li>
+    <li>The syntax is like a regular function.</li>
+    <li>Each instance method includes a first parameter for the object itself.</li>
+    <li>Conventionally, that parameter is named <code>self</code>.</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2><code>__init__</code> Method</h2>
+  <div class="grid">
+    <div>
+      <p>When we write <code>s = Student("Juan", 5)</code>, Python creates a new object and passes it as <code>self</code> into <code>__init__</code>.</p>
+      <div class="card">
+        <button class="btn primary" onclick="initStep()">Step through constructor</button>
+        <button class="btn" onclick="initReset()">Reset steps</button>
+        <div id="initViz" style="margin-top:1rem"></div>
+      </div>
+    </div>
+    <div>
+      
+    <div class="runner">
+      <div class="runner-head">
+        <div>
+          <h3>Run a constructor example</h3>
+          <p class="small">Edit the code, then click Run.</p>
+        </div>
+        <div class="runner-actions">
+          <button class="btn primary" onclick="runPython('init_run')">Run</button>
+          <button class="btn" onclick="resetCode('init_run')">Reset</button>
+        </div>
+      </div>
+      <textarea id="init_run_code" class="codebox" spellcheck="false">class Student:
+    def __init__(self, name, nscores):
+        self.name = name
+        self.scores = [0] * nscores
+
+s = Student(&quot;Juan&quot;, 5)
+print(&quot;name =&quot;, s.name)
+print(&quot;scores =&quot;, s.scores)</textarea>
+      <input type="hidden" id="init_run_starter" value="class Student:
+    def __init__(self, name, nscores):
+        self.name = name
+        self.scores = [0] * nscores
+
+s = Student(&quot;Juan&quot;, 5)
+print(&quot;name =&quot;, s.name)
+print(&quot;scores =&quot;, s.scores)">
+      <div class="output-wrap">
+        <div class="output-title">Output</div>
+        <pre id="init_run_out" class="output">Click Run to execute this Python code in the browser.</pre>
+      </div>
+    </div>
+    
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Constructor without default values</h2>
+  
+    <div class="runner">
+      <div class="runner-head">
+        <div>
+          <h3>Constructor with explicit arguments</h3>
+          <p class="small">Edit the code, then click Run.</p>
+        </div>
+        <div class="runner-actions">
+          <button class="btn primary" onclick="runPython('constructor_no_default')">Run</button>
+          <button class="btn" onclick="resetCode('constructor_no_default')">Reset</button>
+        </div>
+      </div>
+      <textarea id="constructor_no_default_code" class="codebox" spellcheck="false">class Student:
+    def __init__(self, name, nscores):
+        self.name = name
+        self.scores = [0] * nscores
+
+s1 = Student(&quot;Ava&quot;, 3)
+s2 = Student(&quot;Ben&quot;, 4)
+print(s1.name, s1.scores)
+print(s2.name, s2.scores)</textarea>
+      <input type="hidden" id="constructor_no_default_starter" value="class Student:
+    def __init__(self, name, nscores):
+        self.name = name
+        self.scores = [0] * nscores
+
+s1 = Student(&quot;Ava&quot;, 3)
+s2 = Student(&quot;Ben&quot;, 4)
+print(s1.name, s1.scores)
+print(s2.name, s2.scores)">
+      <div class="output-wrap">
+        <div class="output-title">Output</div>
+        <pre id="constructor_no_default_out" class="output">Click Run to execute this Python code in the browser.</pre>
+      </div>
+    </div>
+    
+</section>
+
+<section class="slide">
+  <h2>Constructor with default values</h2>
+  
+    <div class="runner">
+      <div class="runner-head">
+        <div>
+          <h3>Constructor with default values</h3>
+          <p class="small">Try leaving out one or both arguments.</p>
+        </div>
+        <div class="runner-actions">
+          <button class="btn primary" onclick="runPython('constructor_default')">Run</button>
+          <button class="btn" onclick="resetCode('constructor_default')">Reset</button>
+        </div>
+      </div>
+      <textarea id="constructor_default_code" class="codebox" spellcheck="false">class Student:
+    def __init__(self, name=&quot;student&quot;, nscores=5):
+        self.name = name
+        self.scores = [0] * nscores
+
+a = Student()
+b = Student(&quot;Maria&quot;)
+c = Student(&quot;Sam&quot;, 3)
+print(a.name, a.scores)
+print(b.name, b.scores)
+print(c.name, c.scores)</textarea>
+      <input type="hidden" id="constructor_default_starter" value="class Student:
+    def __init__(self, name=&quot;student&quot;, nscores=5):
+        self.name = name
+        self.scores = [0] * nscores
+
+a = Student()
+b = Student(&quot;Maria&quot;)
+c = Student(&quot;Sam&quot;, 3)
+print(a.name, a.scores)
+print(b.name, b.scores)
+print(c.name, c.scores)">
+      <div class="output-wrap">
+        <div class="output-title">Output</div>
+        <pre id="constructor_default_out" class="output">Click Run to execute this Python code in the browser.</pre>
+      </div>
+    </div>
+    
+</section>
+
+<section class="slide">
+  <h2>Example Method: <code>get_score()</code></h2>
+  
+    <div class="runner">
+      <div class="runner-head">
+        <div>
+          <h3>Use an accessor method</h3>
+          <p class="small">Try changing the index or calling with an invalid value to see what assert does.</p>
+        </div>
+        <div class="runner-actions">
+          <button class="btn primary" onclick="runPython('get_score_run')">Run</button>
+          <button class="btn" onclick="resetCode('get_score_run')">Reset</button>
+        </div>
+      </div>
+      <textarea id="get_score_run_code" class="codebox" spellcheck="false">class Student:
+    def __init__(self, name, nscores):
+        self.name = name
+        self.scores = [0] * nscores
+
+    def get_score(self, i):
+        assert 1 &lt;= i &lt;= len(self.scores)
+        return self.scores[i - 1]
+
+    def set_score(self, i, score):
+        assert 1 &lt;= i &lt;= len(self.scores)
+        self.scores[i - 1] = score
+
+s = Student(&quot;Luna&quot;, 5)
+s.set_score(4, 88)
+print(s.get_score(4))</textarea>
+      <input type="hidden" id="get_score_run_starter" value="class Student:
+    def __init__(self, name, nscores):
+        self.name = name
+        self.scores = [0] * nscores
+
+    def get_score(self, i):
+        assert 1 &lt;= i &lt;= len(self.scores)
+        return self.scores[i - 1]
+
+    def set_score(self, i, score):
+        assert 1 &lt;= i &lt;= len(self.scores)
+        self.scores[i - 1] = score
+
+s = Student(&quot;Luna&quot;, 5)
+s.set_score(4, 88)
+print(s.get_score(4))">
+      <div class="output-wrap">
+        <div class="output-title">Output</div>
+        <pre id="get_score_run_out" class="output">Click Run to execute this Python code in the browser.</pre>
+      </div>
+    </div>
+    
+</section>
+
+<section class="slide">
+  <h2>The <code>__str__</code> Magic Method</h2>
+  <ul>
+    <li>Classes often include an <code>__str__</code> method.</li>
+    <li>It builds and returns a string representation of an object’s state.</li>
+    <li>When <code>str(obj)</code> or <code>print(obj)</code> is used, <code>__str__</code> is called automatically.</li>
+    <li>This is especially useful for debugging.</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Student <code>__str__</code></h2>
+  
+    <div class="runner">
+      <div class="runner-head">
+        <div>
+          <h3>Write a string representation</h3>
+          <p class="small">Edit the code, then click Run.</p>
+        </div>
+        <div class="runner-actions">
+          <button class="btn primary" onclick="runPython('str_run')">Run</button>
+          <button class="btn" onclick="resetCode('str_run')">Reset</button>
+        </div>
+      </div>
+      <textarea id="str_run_code" class="codebox" spellcheck="false">class Student:
+    def __init__(self, name, nscores):
+        self.name = name
+        self.scores = [0] * nscores
+
+    def __str__(self):
+        str_score = [str(s) for s in self.scores]
+        str_score = &quot; &quot;.join(str_score)
+        return f&quot;Name: {self.name}\nScores: {str_score}&quot;
+
+s = Student(&quot;Maria&quot;, 5)
+s.scores[0] = 95
+s.scores[1] = 82
+print(s)</textarea>
+      <input type="hidden" id="str_run_starter" value="class Student:
+    def __init__(self, name, nscores):
+        self.name = name
+        self.scores = [0] * nscores
+
+    def __str__(self):
+        str_score = [str(s) for s in self.scores]
+        str_score = &quot; &quot;.join(str_score)
+        return f&quot;Name: {self.name}\nScores: {str_score}&quot;
+
+s = Student(&quot;Maria&quot;, 5)
+s.scores[0] = 95
+s.scores[1] = 82
+print(s)">
+      <div class="output-wrap">
+        <div class="output-title">Output</div>
+        <pre id="str_run_out" class="output">Click Run to execute this Python code in the browser.</pre>
+      </div>
+    </div>
+    
+</section>
+
+<section class="slide">
+  <h2>Accessors and Mutators</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Accessor</h3>
+      <p>Reads a value but does not change it.</p>
+      <h3>Mutator</h3>
+      <p>Changes a value.</p>
+      <p class="small">Python often accesses simple data directly, but method-based access is still common in introductory OOP design.</p>
+    </div>
+    <div>
+      
+    <div class="runner">
+      <div class="runner-head">
+        <div>
+          <h3>Try get_score and set_score</h3>
+          <p class="small">Edit the code, then click Run.</p>
+        </div>
+        <div class="runner-actions">
+          <button class="btn primary" onclick="runPython('mutator_run')">Run</button>
+          <button class="btn" onclick="resetCode('mutator_run')">Reset</button>
+        </div>
+      </div>
+      <textarea id="mutator_run_code" class="codebox" spellcheck="false">class Student:
+    def __init__(self, name, nscores):
+        self.name = name
+        self.scores = [0] * nscores
+
+    def get_score(self, i):
+        assert 1 &lt;= i &lt;= len(self.scores)
+        return self.scores[i - 1]
+
+    def set_score(self, i, score):
+        assert 1 &lt;= i &lt;= len(self.scores)
+        self.scores[i - 1] = score
+
+s = Student(&quot;Kai&quot;, 3)
+print(&quot;before:&quot;, s.scores)
+s.set_score(2, 77)
+print(&quot;after:&quot;, s.scores)
+print(&quot;score 2 =&quot;, s.get_score(2))</textarea>
+      <input type="hidden" id="mutator_run_starter" value="class Student:
+    def __init__(self, name, nscores):
+        self.name = name
+        self.scores = [0] * nscores
+
+    def get_score(self, i):
+        assert 1 &lt;= i &lt;= len(self.scores)
+        return self.scores[i - 1]
+
+    def set_score(self, i, score):
+        assert 1 &lt;= i &lt;= len(self.scores)
+        self.scores[i - 1] = score
+
+s = Student(&quot;Kai&quot;, 3)
+print(&quot;before:&quot;, s.scores)
+s.set_score(2, 77)
+print(&quot;after:&quot;, s.scores)
+print(&quot;score 2 =&quot;, s.get_score(2))">
+      <div class="output-wrap">
+        <div class="output-title">Output</div>
+        <pre id="mutator_run_out" class="output">Click Run to execute this Python code in the browser.</pre>
+      </div>
+    </div>
+    
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>The Lifetime of Objects</h2>
+  <div class="grid">
+    <div>
+      
+    <div class="runner">
+      <div class="runner-head">
+        <div>
+          <h3>Observe references</h3>
+          <p class="small">In CPython, an object becomes a garbage-collection candidate when nothing references it anymore.</p>
+        </div>
+        <div class="runner-actions">
+          <button class="btn primary" onclick="runPython('lifetime_run')">Run</button>
+          <button class="btn" onclick="resetCode('lifetime_run')">Reset</button>
+        </div>
+      </div>
+      <textarea id="lifetime_run_code" class="codebox" spellcheck="false">class Student:
+    def __init__(self, name, n):
+        self.name = name
+        self.scores = [0] * n
+
+s = Student(&quot;Sam&quot;, 10)
+print(&quot;id(s) =&quot;, id(s))
+
+cs1410 = [s]
+print(&quot;list holds:&quot;, cs1410[0].name)
+
+s = None
+print(&quot;s =&quot;, s)
+print(&quot;object still reachable through list:&quot;, cs1410[0].name)
+
+obj = cs1410.pop()
+print(&quot;popped:&quot;, obj.name)
+print(&quot;list now:&quot;, cs1410)</textarea>
+      <input type="hidden" id="lifetime_run_starter" value="class Student:
+    def __init__(self, name, n):
+        self.name = name
+        self.scores = [0] * n
+
+s = Student(&quot;Sam&quot;, 10)
+print(&quot;id(s) =&quot;, id(s))
+
+cs1410 = [s]
+print(&quot;list holds:&quot;, cs1410[0].name)
+
+s = None
+print(&quot;s =&quot;, s)
+print(&quot;object still reachable through list:&quot;, cs1410[0].name)
+
+obj = cs1410.pop()
+print(&quot;popped:&quot;, obj.name)
+print(&quot;list now:&quot;, cs1410)">
+      <div class="output-wrap">
+        <div class="output-title">Output</div>
+        <pre id="lifetime_run_out" class="output">Click Run to execute this Python code in the browser.</pre>
+      </div>
+    </div>
+    
+    </div>
+    <div class="card">
+      <h3>Visual steps</h3>
+      <button class="btn primary" onclick="lifeStep()">Next step</button>
+      <button class="btn" onclick="lifeReset()">Reset</button>
+      <div id="lifeViz" style="margin-top:1rem"></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Class Variables and Methods</h2>
+  <div class="grid">
+    <div class="card">
+      <ul>
+        <li>Class variables belong to the class, not each object.</li>
+        <li>All instances share the same class variable.</li>
+        <li>Class methods receive <code>cls</code>, not <code>self</code>.</li>
+        <li>They can be used as alternative constructors.</li>
+      </ul>
+      <button class="btn primary" onclick="schoolChange()">Change Student.SCHOOL</button>
+      <div id="schoolViz" style="margin-top:1rem"></div>
+    </div>
+    <div>
+      
+    <div class="runner">
+      <div class="runner-head">
+        <div>
+          <h3>Run a class variable example</h3>
+          <p class="small">Edit the code, then click Run.</p>
+        </div>
+        <div class="runner-actions">
+          <button class="btn primary" onclick="runPython('class_var_run')">Run</button>
+          <button class="btn" onclick="resetCode('class_var_run')">Reset</button>
+        </div>
+      </div>
+      <textarea id="class_var_run_code" class="codebox" spellcheck="false">class Student:
+    SCHOOL = &quot;UVU&quot;
+
+    def __init__(self, name):
+        self.name = name
+
+s1 = Student(&quot;Harry&quot;)
+s2 = Student(&quot;Maria&quot;)
+
+print(&quot;Before change:&quot;)
+print(s1.name, Student.SCHOOL)
+print(s2.name, Student.SCHOOL)
+
+Student.SCHOOL = &quot;Westminster&quot;
+
+print(&quot;\nAfter change:&quot;)
+print(s1.name, Student.SCHOOL)
+print(s2.name, Student.SCHOOL)</textarea>
+      <input type="hidden" id="class_var_run_starter" value="class Student:
+    SCHOOL = &quot;UVU&quot;
+
+    def __init__(self, name):
+        self.name = name
+
+s1 = Student(&quot;Harry&quot;)
+s2 = Student(&quot;Maria&quot;)
+
+print(&quot;Before change:&quot;)
+print(s1.name, Student.SCHOOL)
+print(s2.name, Student.SCHOOL)
+
+Student.SCHOOL = &quot;Westminster&quot;
+
+print(&quot;\nAfter change:&quot;)
+print(s1.name, Student.SCHOOL)
+print(s2.name, Student.SCHOOL)">
+      <div class="output-wrap">
+        <div class="output-title">Output</div>
+        <pre id="class_var_run_out" class="output">Click Run to execute this Python code in the browser.</pre>
+      </div>
+    </div>
+    
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Class methods</h2>
+  
+    <div class="runner">
+      <div class="runner-head">
+        <div>
+          <h3>Use @classmethod as an alternative constructor</h3>
+          <p class="small">Notice that the class method builds and returns a Student object using cls(...).</p>
+        </div>
+        <div class="runner-actions">
+          <button class="btn primary" onclick="runPython('classmethod_run')">Run</button>
+          <button class="btn" onclick="resetCode('classmethod_run')">Reset</button>
+        </div>
+      </div>
+      <textarea id="classmethod_run_code" class="codebox" spellcheck="false">class Student:
+    SCHOOL = &quot;UVU&quot;
+
+    def __init__(self, name, year):
+        self.name = name
+        self.year = year
+
+    @classmethod
+    def freshman(cls, name):
+        return cls(name, 1)
+
+    def __str__(self):
+        return f&quot;{self.name}, year {self.year}, school {self.SCHOOL}&quot;
+
+s = Student.freshman(&quot;Avery&quot;)
+print(s)</textarea>
+      <input type="hidden" id="classmethod_run_starter" value="class Student:
+    SCHOOL = &quot;UVU&quot;
+
+    def __init__(self, name, year):
+        self.name = name
+        self.year = year
+
+    @classmethod
+    def freshman(cls, name):
+        return cls(name, 1)
+
+    def __str__(self):
+        return f&quot;{self.name}, year {self.year}, school {self.SCHOOL}&quot;
+
+s = Student.freshman(&quot;Avery&quot;)
+print(s)">
+      <div class="output-wrap">
+        <div class="output-title">Output</div>
+        <pre id="classmethod_run_out" class="output">Click Run to execute this Python code in the browser.</pre>
+      </div>
+    </div>
+    
+</section>
+
+<section class="slide">
+  <h2>Static methods</h2>
+  <div class="grid">
+    <div>
+      
+    <div class="runner">
+      <div class="runner-head">
+        <div>
+          <h3>Use a static method</h3>
+          <p class="small">Edit the code, then click Run.</p>
+        </div>
+        <div class="runner-actions">
+          <button class="btn primary" onclick="runPython('staticmethod_run')">Run</button>
+          <button class="btn" onclick="resetCode('staticmethod_run')">Reset</button>
+        </div>
+      </div>
+      <textarea id="staticmethod_run_code" class="codebox" spellcheck="false">class Rectangle:
+    def __init__(self, l, w):
+        self.length = l
+        self.width = w
+
+    def area(self):
+        return self.length * self.width
+
+    @staticmethod
+    def combined_area(r1, r2):
+        return r1.area() + r2.area()
+
+rect_1 = Rectangle(12, 27)
+rect_2 = Rectangle(9, 3)
+combined = Rectangle.combined_area(rect_1, rect_2)
+print(combined)</textarea>
+      <input type="hidden" id="staticmethod_run_starter" value="class Rectangle:
+    def __init__(self, l, w):
+        self.length = l
+        self.width = w
+
+    def area(self):
+        return self.length * self.width
+
+    @staticmethod
+    def combined_area(r1, r2):
+        return r1.area() + r2.area()
+
+rect_1 = Rectangle(12, 27)
+rect_2 = Rectangle(9, 3)
+combined = Rectangle.combined_area(rect_1, rect_2)
+print(combined)">
+      <div class="output-wrap">
+        <div class="output-title">Output</div>
+        <pre id="staticmethod_run_out" class="output">Click Run to execute this Python code in the browser.</pre>
+      </div>
+    </div>
+    
+    </div>
+    <div class="card">
+      <h3>Quick calculator</h3>
+      <label>r1: <input id="r1l" value="12" size="4"> × <input id="r1w" value="27" size="4"></label><br><br>
+      <label>r2: <input id="r2l" value="9" size="4"> × <input id="r2w" value="3" size="4"></label><br><br>
+      <button class="btn primary" onclick="calcArea()">Calculate combined area</button>
+      <p id="areaOut"><b>Combined area = ?</b></p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Class Models… Method Models…</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Class models…</h3>
+      <p>A thing. A kind of thing. A type of thing. Attributes of a thing.</p>
+      <p>In a problem description, look for <b>nouns</b>.</p>
+    </div>
+    <div class="card">
+      <h3>Method models…</h3>
+      <p>An action. An operation. An algorithm. Behavior of a thing.</p>
+      <p>In a problem description, look for <b>verbs</b>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Recipe for Making a Class</h2>
+  <ul>
+    <li>Before writing code, think about behavior and attributes.</li>
+    <li>Choose an appropriate class name.</li>
+    <li>Develop a short list of methods available to users.</li>
+    <li>Write a short snippet that uses the new class.</li>
+    <li>These “use cases” can also be represented in UML.</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Recipe for Making a Class</h2>
+  <ul>
+    <li>Choose appropriate data types for the attributes.</li>
+    <li>Fill in the skeleton with <code>__init__</code> and <code>__str__</code>.</li>
+    <li>Complete and test the remaining methods incrementally.</li>
+    <li>Document your code as you go using module, class, and method docstrings.</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h2>Style Reminders</h2>
+  <div class="grid">
+    <div class="card">
+      <ul>
+        <li>Class names use <b>CamelCase</b></li>
+        <li>Method names use <b>snake_case</b></li>
+        <li>Use module docstrings</li>
+        <li>Use class docstrings</li>
+        <li>Use method docstrings</li>
+      </ul>
+    </div>
+    <div>
+      
+    <div class="runner">
+      <div class="runner-head">
+        <div>
+          <h3>Final practice: clean class style</h3>
+          <p class="small">Use this final slide as a quick practice template.</p>
+        </div>
+        <div class="runner-actions">
+          <button class="btn primary" onclick="runPython('final_practice')">Run</button>
+          <button class="btn" onclick="resetCode('final_practice')">Reset</button>
+        </div>
+      </div>
+      <textarea id="final_practice_code" class="codebox" spellcheck="false">class Book:
+    &quot;&quot;&quot;A simple Book class.&quot;&quot;&quot;
+
+    def __init__(self, title, author):
+        &quot;&quot;&quot;Initialize a Book object.&quot;&quot;&quot;
+        self.title = title
+        self.author = author
+
+    def __str__(self):
+        &quot;&quot;&quot;Return a readable representation.&quot;&quot;&quot;
+        return f&quot;{self.title} by {self.author}&quot;
+
+b = Book(&quot;Python Basics&quot;, &quot;J. Doe&quot;)
+print(b)</textarea>
+      <input type="hidden" id="final_practice_starter" value="class Book:
+    &quot;&quot;&quot;A simple Book class.&quot;&quot;&quot;
+
+    def __init__(self, title, author):
+        &quot;&quot;&quot;Initialize a Book object.&quot;&quot;&quot;
+        self.title = title
+        self.author = author
+
+    def __str__(self):
+        &quot;&quot;&quot;Return a readable representation.&quot;&quot;&quot;
+        return f&quot;{self.title} by {self.author}&quot;
+
+b = Book(&quot;Python Basics&quot;, &quot;J. Doe&quot;)
+print(b)">
+      <div class="output-wrap">
+        <div class="output-title">Output</div>
+        <pre id="final_practice_out" class="output">Click Run to execute this Python code in the browser.</pre>
+      </div>
+    </div>
+    
+    </div>
+  </div>
+</section>
+
+  </div>
+
+  <div class="footer"><span id="counter"></span> · Use ← → or Space to navigate · Python runs in the browser via Pyodide</div>
+  <div class="nav">
+    <button class="btn" onclick="prevSlide()">←</button>
+    <button class="btn" onclick="nextSlide()">→</button>
+  </div>
+  <div id="progress" class="progress"></div>
+
+  <script>
+const slides = [...document.querySelectorAll('.slide')];
+let idx = 0;
+function show(i){
+  idx = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach((s, j) => s.classList.toggle('active', j === idx));
+  document.getElementById('counter').textContent = `${idx + 1} / ${slides.length}`;
+  document.getElementById('progress').style.width = ((idx + 1) / slides.length * 100) + '%';
+}
+function nextSlide(){ show(idx + 1); }
+function prevSlide(){ show(idx - 1); }
+document.addEventListener('keydown', e => {
+  if(['ArrowRight', 'PageDown', ' '].includes(e.key)){ e.preventDefault(); nextSlide(); }
+  if(['ArrowLeft', 'PageUp'].includes(e.key)){ e.preventDefault(); prevSlide(); }
+});
+show(0);
+
+// ---------- copy demo ----------
+let copyState = {alias:false, shallow:false, deep:false, mut:false};
+function copyDemo(action){
+  if(action === 'reset') copyState = {alias:false, shallow:false, deep:false, mut:false};
+  if(action === 'alias') copyState.alias = true;
+  if(action === 'shallow') copyState.shallow = true;
+  if(action === 'deep') copyState.deep = true;
+  if(action === 'mutate') copyState.mut = true;
+
+  const courseA = copyState.mut ? 'CS1400' : 'CS1410';
+  let html = '';
+  html += `<div class="ref">p1 ───► Person A</div>`;
+  html += `<div class="obj"><b>Person A</b><br>first = "Hope"<br>last = "Smith"<br>age = 2<br>courses → <span class="pill">List A: [${courseA}, CS2420]</span></div>`;
+  if(copyState.alias){
+    html += `<div class="ref">p2 ───► <span class="highlight">same Person A</span></div>`;
+  }
+  if(copyState.shallow){
+    html += `<div class="ref">p3 ───► Person B</div>`;
+    html += `<div class="obj"><b>Person B (shallow copy)</b><br>first = "Hope"<br>last = "Smith"<br>age = 2<br>courses → <span class="pill">same List A</span></div>`;
+  }
+  if(copyState.deep){
+    html += `<div class="ref">p4 ───► Person C</div>`;
+    html += `<div class="obj"><b>Person C (deep copy)</b><br>first = "Hope"<br>last = "Smith"<br>age = 2<br>courses → <span class="pill">List C: [CS1410, CS2420]</span></div>`;
+  }
+  document.getElementById('copyViz').innerHTML = html;
+  document.getElementById('copyMsg').textContent = copyState.mut
+    ? 'Mutating the shared list changes p1 and the shallow copy, but not the deep copy.'
+    : 'Click the buttons above to build the reference diagram step by step.';
+}
+copyDemo('reset');
+
+// ---------- init self demo ----------
+let initN = 0;
+const initSteps = [
+  '<p><span class="pill">1</span> Evaluate <code>Student("Juan", 5)</code></p>',
+  '<p><span class="pill">2</span> Create a new empty Student object</p>',
+  '<p><span class="pill">3</span> Bind <code>self</code> to that new object</p>',
+  '<p><span class="pill">4</span> Set <code>self.name = "Juan"</code></p>',
+  '<p><span class="pill">5</span> Set <code>self.scores = [0, 0, 0, 0, 0]</code></p>'
+];
+function initStep(){
+  initN = Math.min(initSteps.length, initN + 1);
+  document.getElementById('initViz').innerHTML = initSteps.slice(0, initN).join('');
+}
+function initReset(){
+  initN = 0;
+  document.getElementById('initViz').innerHTML = '<p class="small">Click "Step through constructor" to reveal the sequence.</p>';
+}
+initReset();
+
+// ---------- object lifetime demo ----------
+let life = 0;
+function renderLife(){
+  let t = '';
+  if(life === 0){
+    t = '<p class="small">Click "Next step".</p>';
+  }
+  if(life >= 1){
+    t += '<div class="obj"><b>Step 1</b><br><code>s</code> → Student object</div>';
+  }
+  if(life >= 2){
+    t += '<div class="obj"><b>Step 2</b><br><code>cs1410 = [s]</code><br>The list also points to the same object.</div>';
+  }
+  if(life >= 3){
+    t += '<div class="obj"><b>Step 3</b><br><code>s = None</code><br>The object still exists because the list references it.</div>';
+  }
+  if(life >= 4){
+    t += '<div class="obj"><b>Step 4</b><br><code>cs1410.pop()</code><br>If no references remain, the object becomes a garbage-collection candidate.</div>';
+  }
+  document.getElementById('lifeViz').innerHTML = t;
+}
+function lifeStep(){ life = Math.min(4, life + 1); renderLife(); }
+function lifeReset(){ life = 0; renderLife(); }
+lifeReset();
+
+// ---------- class variable demo ----------
+let school = 'UVU';
+function renderSchool(){
+  document.getElementById('schoolViz').innerHTML = `
+    <div class="obj"><b>Student class</b><br>SCHOOL = "${school}"</div>
+    <div class="grid" style="grid-template-columns:1fr 1fr; gap:.8rem">
+      <div class="obj">s1<br>name = "Harry"<br>SCHOOL → ${school}</div>
+      <div class="obj">s2<br>name = "Maria"<br>SCHOOL → ${school}</div>
+    </div>`;
+}
+function schoolChange(){
+  school = (school === 'UVU') ? 'Westminster' : 'UVU';
+  renderSchool();
+}
+renderSchool();
+
+// ---------- static method calculator ----------
+function calcArea(){
+  const a = Number(document.getElementById('r1l').value) * Number(document.getElementById('r1w').value)
+          + Number(document.getElementById('r2l').value) * Number(document.getElementById('r2w').value);
+  document.getElementById('areaOut').innerHTML = '<b>Combined area = ' + a + '</b>';
+}
+
+// ---------- pyodide ----------
+let pyodideReady = null;
+
+async function loadRuntime(){
+  if(pyodideReady) return pyodideReady;
+  pyodideReady = (async () => {
+    updateAllOutputs('Loading Python runtime (Pyodide). First load may take a few seconds...', 'loading');
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js';
+    document.head.appendChild(script);
+    await new Promise((resolve, reject) => {
+      script.onload = resolve;
+      script.onerror = reject;
+    });
+    window.pyodide = await loadPyodide();
+    updateAllOutputs('Python runtime loaded. You can run code now.', 'success');
+    return window.pyodide;
+  })();
+  return pyodideReady;
+}
+
+function updateAllOutputs(msg, klass){
+  document.querySelectorAll('.output').forEach(el => {
+    if(el.dataset.touched !== 'true'){
+      el.textContent = msg;
+      el.classList.remove('loading', 'error', 'success');
+      if(klass) el.classList.add(klass);
+    }
+  });
+}
+
+async function runPython(id){
+  const out = document.getElementById(id + '_out');
+  const code = document.getElementById(id + '_code').value;
+  out.dataset.touched = 'true';
+  out.textContent = 'Running...';
+  out.classList.remove('error', 'success');
+  out.classList.add('loading');
+
+  try{
+    const py = await loadRuntime();
+    py.globals.set('user_code', code);
+    const wrapper = `
+import io, traceback
+from contextlib import redirect_stdout, redirect_stderr
+
+_stdout = io.StringIO()
+_stderr = io.StringIO()
+_ns = {}
+
+with redirect_stdout(_stdout), redirect_stderr(_stderr):
+    try:
+        exec(user_code, _ns, _ns)
+    except Exception:
+        traceback.print_exc()
+
+output_text = _stdout.getvalue() + _stderr.getvalue()
+`;
+    await py.runPythonAsync(wrapper);
+    const result = py.globals.get('output_text');
+    out.textContent = result || '[no output]';
+    out.classList.remove('loading', 'error');
+    out.classList.add('success');
+  }catch(err){
+    out.textContent = 'Error loading or running Python:\n' + err;
+    out.classList.remove('loading', 'success');
+    out.classList.add('error');
+  }
+}
+
+function resetCode(id){
+  const starter = document.getElementById(id + '_starter').value;
+  const codebox = document.getElementById(id + '_code');
+  const out = document.getElementById(id + '_out');
+  codebox.value = starter;
+  out.textContent = 'Code reset. Click Run to execute this Python code in the browser.';
+  out.dataset.touched = 'true';
+  out.classList.remove('loading', 'error', 'success');
+}
+</script>
+</body>
+</html>
