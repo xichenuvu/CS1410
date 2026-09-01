@@ -1,0 +1,1123 @@
+---
+format:
+  revealjs:
+    theme: default
+    css: course.css
+    transition: fade
+    slide-number: true
+    progress: true
+    controls: true
+    center: false
+    width: "100%"
+    height: "100%"
+    margin: 0.04
+    min-scale: 1
+    max-scale: 1
+    incremental: false
+include-after-body: monaco_scripts.html
+include-in-header: monaco_styles.html
+---
+# Introduction to Classes and Objects {.title-slide}
+
+<div class="title-card">
+<div class="title-meta">
+<div>CS 1410</div>
+<div>Xi Chen</div>
+</div>
+</div>
+
+## Objectives
+
+<div class="objectives">
+
+<div class="objective-item fragment"><span class="objective-number">1</span><span>Determine the attributes and behavior of types of objects required by a program</span></div>
+
+<div class="objective-item fragment"><span class="objective-number">2</span><span>Choose appropriate data structures to represent class attributes</span></div>
+
+<div class="objective-item fragment"><span class="objective-number">3</span><span>Define `__init__` initializers, instance variables, and methods</span></div>
+
+<div class="objective-item fragment"><span class="objective-number">4</span><span>Distinguish between `__new__`, which creates an object, and `__init__`, which initializes it</span></div>
+
+<div class="objective-item fragment"><span class="objective-number">5</span><span>List methods, including parameters and return types, that realize class behavior</span></div>
+
+<div class="objective-item fragment"><span class="objective-number">6</span><span>Recognize class attributes and class methods versus instance data and methods</span></div>
+
+<div class="objective-item fragment"><span class="objective-number">7</span><span>Define `__str__` so an object has a readable string representation</span></div>
+
+</div>
+
+## Creating a New Type
+
+A class is a **blueprint** or **template** for creating objects.
+
+::: {.incremental}
+- The class defines **data** stored by its objects.
+- The class defines **methods** that operate on that data.
+- The collection of methods forms the class's **interface**.
+- Calling the class creates an **instance/object**.
+- Objects are mutable: their state can change.
+:::
+
+## First `Person` Class
+
+<div class="runner" data-runner="person_intro">
+<div class="runner-head">
+<div>
+- `class` keyword
+- A Person has three attributes: first name, last name, and age.
+- Create a Person object.
+- Change the object's attribute values.
+</div>
+<div>
+<button class="btn primary run-btn">Run</button>
+<button class="btn reset-btn">Reset</button>
+</div>
+</div>
+
+<textarea class="codebox" spellcheck="false">
+
+</textarea>
+
+<div class="output-title">Output</div>
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+</div>
+
+## `Person` Interface
+
+The **interface** of a class is the set of methods available for using its objects.
+
+| Method | Purpose |
+|---|---|
+| `Person(first, last, age)` | Create a `Person` object and initialize its instance attributes |
+| `fullname()` | Return the full name |
+| `email()` | Return the email address |
+| `__str__()` | Return a readable string representation |
+
+<div class="takeaway">
+The interface describes <strong>what a user can do with a Person object</strong>.
+</div>
+
+<!-- ## Build the `Person` Interface
+
+<div class="runner" data-runner="person_methods">
+<div class="runner-head">
+<div>
+<h3>Instance methods operate on one Person object</h3>
+<p class="small"><code>self</code> refers to the object on which the method is called.</p>
+</div>
+<div>
+<button class="btn primary run-btn">Run</button>
+<button class="btn reset-btn">Reset</button>
+</div>
+</div>
+
+<textarea class="codebox" spellcheck="false">class Person:
+    SCHOOL = "UVU"
+
+    def __init__(self, first_name, last_name, age):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.age = age
+
+    def fullname(self):
+        return f"{self.first_name} {self.last_name}"
+
+    def email(self):
+        return f"{self.first_name.lower()}.{self.last_name.lower()}@uvu.edu"
+
+
+p = Person("Hellen", "Green", 24)
+
+print(p.fullname())
+print(p.email())
+
+p.first_name = "Jill"
+
+print(p.fullname())</textarea>
+
+<div class="output-title">Output</div>
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+</div> -->
+
+
+## Person Class Diagram
+
+
+:::: {.columns}
+::: {.column width="48%"}
+<div class="uml-card">
+<div class="uml-title">Person</div>
+
+<div class="uml-section">
+<div class="uml-section-label">Instance attributes</div>
+<div><code>+ first_name: str</code></div>
+<div><code>+ last_name: str</code></div>
+<div><code>+ age: int</code></div>
+</div>
+
+<div class="uml-section">
+<div class="uml-section-label">Instance methods</div>
+<div><code>+ fullname(): str</code></div>
+<div><code>+ email(): str</code></div>
+</div>
+
+</div>
+:::
+::: {.column width="48%"}
+<div class="runner" data-runner="person_intro">
+<div class="runner-head">
+<div>
+<h3>Create and use a Person object</h3>
+<p class="small">Notice the default value for <code>age</code>.</p>
+</div>
+<div>
+<button class="btn primary run-btn">Run</button>
+<button class="btn reset-btn">Reset</button>
+</div>
+</div>
+
+<textarea class="codebox" spellcheck="false">class Person:
+    ...
+    
+</textarea>
+
+<div class="output-title">Output</div>
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+</div>
+:::
+
+::::
+## The `__init__` Initializer
+
+`__init__` runs after a new object has been created.
+
+```python
+class Person:
+    def __init__(self, first, last, age):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.age = age
+
+p = Person("Hellen", "Green", 24)
+print(p.first_name, p.last_name)
+
+p.age = 32
+print(f"Age {p.age}")
+```
+
+For this call, `__init__` initializes:
+
+```python
+self.first_name = "Hellen"
+self.last_name = "Green"
+self.age = 24
+```
+
+<div class="takeaway">
+<code>`__init__`</code> establishes the object's initial state.
+</div>
+
+
+
+## `__init__` With Default Values
+
+<div class="runner" data-runner="person_init_default">
+<div class="runner-head">
+<div><h3>Defaults make some arguments optional</h3></div>
+<div>
+<button class="btn primary run-btn">Run</button>
+<button class="btn reset-btn">Reset</button>
+</div>
+</div>
+
+<textarea class="codebox" spellcheck="false">class Person:
+    def __init__(self, first, last, age=18):
+        self.first_name = first
+        self.last_name = last
+        self.age = age
+
+
+a = Person("Maria", "White")
+b = Person("Sam", "Jones", 21)
+
+print(a.first_name, a.last_name, a.age)
+print(b.first_name, b.last_name, b.age)</textarea>
+
+<div class="output-title">Output</div>
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+</div>
+
+## The `__str__` Magic Method
+
+`__str__` returns a readable string representation of an object.
+
+<div class="runner" data-runner="person_str">
+<div class="runner-head">
+<div>
+
+</div>
+<div>
+<button class="btn primary run-btn">Run</button>
+<button class="btn reset-btn">Reset</button>
+</div>
+</div>
+
+<textarea class="codebox" spellcheck="false">class Person:
+    def __init__(self, first_name, last_name, age=16):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.age = age
+
+    def __str__(self):
+        return f"Person's name: {self.first_name} {self.last_name}, Age {self.age}"
+
+p = Person("Hellen", "Green", 24)
+
+print(p)
+print(str(p))</textarea>
+
+<div class="output-title">Output</div>
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+</div>
+
+## Importing the `Person` Class
+
+:::: {.columns}
+
+::: {.column width="55%"}
+
+### `person.py`
+
+```python
+class Person:
+    def __init__(self, first_name, last_name, age=16):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.age = age
+
+    def __str__(self):
+        return f"Person's name: {self.first_name} {self.last_name}, Age {self.age}"
+```
+
+:::
+
+::: {.column width="45%"}
+
+### `demo.py`
+
+```python
+from person import Person
+
+p = Person("Hellen", "Green", 24)
+
+print(p)
+print(str(p))
+```
+
+:::
+
+::::
+
+## A Deeper Look at the `Person` Class
+
+<div class="runner" data-runner="person_methods">
+<div class="runner-head">
+<div>
+<h3>Instance methods operate on one Person object</h3>
+<p class="small"><code>self</code> refers to the object on which the method is called.</p>
+</div>
+<div>
+<button class="btn primary run-btn">Run</button>
+<button class="btn reset-btn">Reset</button>
+</div>
+</div>
+
+<textarea class="codebox" spellcheck="false">class Person:
+    SCHOOL = "UVU"
+
+    def __init__(self, first_name, last_name, age):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.age = age
+
+    def fullname(self):
+        return f"{self.first_name} {self.last_name}"
+
+    def email(self):
+        return f"{self.first_name.lower()}.{self.last_name.lower()}@uvu.edu"
+
+
+p = Person("Hellen", "Green", 24)
+
+print(p.fullname())
+print(p.email())
+
+p.first_name = "Jill"
+
+print(p.fullname())</textarea>
+
+<div class="output-title">Output</div>
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+</div>
+
+## Instance Methods and `self`
+
+Method definitions are written inside the class.
+
+```python
+class Person:
+    def fullname(self):
+        return f"{self.first} {self.last}"
+```
+
+::: {.incremental}
+- An instance method operates on one particular object.
+- Its first parameter is conventionally named `self`.
+- In `p.fullname()`, Python binds `self` to the object referenced by `p`.
+- The method can read or change that object's instance attributes.
+:::
+
+
+## Class Attribute 
+```python
+class Person:
+    SCHOOL = "UVU"
+```
+
+
+
+<div class="callout-note">
+<h3>Class attribute</h3>
+
+`Person.SCHOOL`
+
+- belongs to the class
+- shared by all `Person` objects
+- accessed through the class or an instance
+</div>
+
+
+
+
+
+<!--## UML View of `Person`
+
+<div class="uml-card wide-uml">
+<div class="uml-title">Person</div>
+
+<div class="uml-section">
+<div class="uml-section-label">Class attribute</div>
+<div><code>SCHOOL: str = "UVU"</code></div>
+</div>
+
+<div class="uml-section">
+<div class="uml-section-label">Instance attributes</div>
+<div><code>- first_name: str</code></div>
+<div><code>- last_name: str</code></div>
+<div><code>- age: int = 18</code></div>
+</div>
+
+<div class="uml-section">
+<div class="uml-section-label">Instance methods</div>
+<div><code>+ `__init__`(first_name, last_name, age=16)</code></div>
+<div><code>+ fullname(): str</code></div>
+<div><code>+ email(): str</code></div>
+<div><code>+ get_age(): int</code></div>
+<div><code>+ set_first(new_value): None</code></div>
+<div><code>+ compare_age(other): str</code></div>
+<div><code>+ `__str__`(): str</code></div>
+</div>
+
+<div class="uml-section">
+<div class="uml-section-label">Class and static methods</div>
+<div><code>+ update_school(new_school) «class»</code></div>
+<div><code>+ make_admin(): Person «class»</code></div>
+<div><code>+ compare_age2(person1, person2): str «static»</code></div>
+</div>
+</div>-->
+
+
+## Accessors and Mutators
+
+:::: {.columns}
+::: {.column width="42%"}
+<div class="concept-card">
+<h3>Accessor</h3>
+Reads information without changing the object.
+
+Example:
+
+```python
+def get_age(self):
+    return self.age
+```
+
+<h3>Mutator</h3>
+Changes the object's state.
+
+```python
+def birthday(self):
+    self.age += 1
+```
+</div>
+:::
+
+::: {.column width="58%"}
+<div class="runner" data-runner="person_accessor_mutator">
+<div class="runner-head">
+<div><h3>Watch the state change</h3></div>
+<div>
+<button class="btn primary run-btn">Run</button>
+<button class="btn reset-btn">Reset</button>
+</div>
+</div>
+
+<textarea class="codebox" spellcheck="false">class Person:
+    def __init__(self, first, last, age):
+        self.first_name = first
+        self.last_name = last
+        self.age = age
+
+    def get_age(self):
+        return self.age
+
+    def birthday(self):
+        self.age += 1
+
+p = Person("Hellen", "Green", 24)
+
+print("before:", p.get_age())
+p.birthday()
+print("after:", p.get_age())</textarea>
+
+<div class="output-title">Output</div>
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+</div>
+:::
+::::
+
+
+
+## Updating a Class Attribute
+
+<div class="runner" data-runner="update_school">
+<div class="runner-head">
+<div>
+<h3><code>update_school()</code> changes shared class data</h3>
+</div>
+<div>
+<button class="btn primary run-btn">Run</button>
+<button class="btn reset-btn">Reset</button>
+</div>
+</div>
+
+<textarea class="codebox" spellcheck="false">class Person:
+    SCHOOL = "UVU"
+
+    def __init__(self, first_name, last_name, age=16):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.age = age
+
+    @classmethod
+    def update_school(cls, new_school):
+        cls.SCHOOL = new_school
+
+p1 = Person("Hellen", "Green", 24)
+p2 = Person("Ben", "White", 18)
+
+print(p1.SCHOOL)
+print(p2.SCHOOL)
+
+Person.update_school("BYU")
+
+print(p1.SCHOOL)
+print(p2.SCHOOL)</textarea>
+
+<div class="output-title">Output</div>
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+</div>
+
+## Class Methods and `cls`
+
+A class method operates on the **class**, not one particular object.
+
+::: {.incremental}
+- Use the `@classmethod` decorator.
+- The first parameter is conventionally named `cls`.
+- `cls` refers to the class.
+- A class method can read or change class attributes.
+- A class method can also create and return objects.
+:::
+
+## Class Method: `make_admin()`
+
+<div class="runner" data-runner="make_admin">
+<div class="runner-head">
+<div>
+<h3>An alternative way to create a Person object</h3>
+</div>
+<div>
+<button class="btn primary run-btn">Run</button>
+<button class="btn reset-btn">Reset</button>
+</div>
+</div>
+
+<textarea class="codebox" spellcheck="false">class Person:
+    def __init__(self, first_name, last_name, age=16):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.age = age
+
+    @classmethod
+    def make_admin(cls):
+        return cls("admin", "Admin", 35)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}, Age {self.age}"
+
+admin = Person.make_admin()
+print(admin)</textarea>
+
+<div class="output-title">Output</div>
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+</div>
+
+## Passing Another Object to an Instance Method
+
+`other` can be another `Person` object.
+
+<div class="runner" data-runner="compare_age">
+<div class="runner-head">
+<div>
+<h3><code>self</code> and <code>other</code> are two Person objects</h3>
+</div>
+<div>
+<button class="btn primary run-btn">Run</button>
+<button class="btn reset-btn">Reset</button>
+</div>
+</div>
+
+<textarea class="codebox" spellcheck="false">class Person:
+    def __init__(self, first_name, last_name, age=16):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.age = age
+
+    def compare_age(self, other):
+        if self.age > other.age:
+            return self.first_name
+        return other.first_name
+
+p1 = Person("Hellen", "Green", 24)
+p2 = Person("Will", "White", 18)
+
+print(p1.compare_age(p2))</textarea>
+
+<div class="output-title">Output</div>
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+</div>
+
+## Static Methods
+
+A static method is associated with the class but receives neither `self` nor `cls` automatically.
+
+<div class="runner" data-runner="compare_age2">
+<div class="runner-head">
+<div>
+<h3><code>compare_age2()</code> receives both Person objects explicitly</h3>
+</div>
+<div>
+<button class="btn primary run-btn">Run</button>
+<button class="btn reset-btn">Reset</button>
+</div>
+</div>
+
+<textarea class="codebox" spellcheck="false">class Person:
+    def __init__(self, first_name, last_name, age=16):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.age = age
+
+    @staticmethod
+    def compare_age2(person1, person2):
+        if person1.age > person2.age:
+            return person1.first_name
+        return person2.first_name
+
+p1 = Person("Hellen", "Green", 24)
+p2 = Person("Will", "White", 18)
+
+print(Person.compare_age2(p1, p2))</textarea>
+
+<div class="output-title">Output</div>
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+</div>
+
+## Updated `Person` Class Diagram
+
+<div class="uml-card wide-uml">
+<div class="uml-title">Person</div>
+
+<div class="uml-section">
+<div class="uml-section-label">Class attribute</div>
+<div><code>SCHOOL: str = "UVU"</code></div>
+</div>
+
+<div class="uml-section">
+<div class="uml-section-label">Instance attributes</div>
+<div><code>- first_name: str</code></div>
+<div><code>- last_name: str</code></div>
+<div><code>- age: int = 16</code></div>
+</div>
+
+<div class="uml-section">
+<div class="uml-section-label">Instance methods</div>
+<div><code>+ Person(first_name, last_name, age=16)</code></div>
+<div><code>+ fullname(): str</code></div>
+<div><code>+ email(): str</code></div>
+<div><code>+ get_age(): int</code></div>
+<div><code>+ set_first(new_value): None</code></div>
+<div><code>+ compare_age(other): str</code></div>
+<div><code>+ `__str__`(): str</code></div>
+</div>
+
+<div class="uml-section">
+<div class="uml-section-label">Class methods</div>
+<div><code>+ update_school(new_school): None «class»</code></div>
+<div><code>+ make_admin(): Person «class»</code></div>
+</div>
+
+<div class="uml-section">
+<div class="uml-section-label">Static method</div>
+<div><code>+ compare_age2(person1, person2): str «static»</code></div>
+</div>
+</div>
+
+## Complete `Person` Example — `person.py`
+```python
+class Person:
+    SCHOOL = "UVU" # Class attribute
+    def __init__(self, first_name, last_name, age = 16):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.age = age
+        
+    # Instance/object method
+    def fullname(self):
+        return f"{self.first_name} {self.last_name}"
+    
+    def email(self):
+        # hellen.green@uvu.edu
+        return f"{self.first_name.lower()}.{self.last_name.lower()}@uvu.edu"
+    
+    def get_age(self): # self - > object itself
+        return self.age
+    
+    ## setter
+    def birthday(self):
+        self.age += 1
+
+    @classmethod
+    def update_school(cls, new_school):
+        cls.SCHOOL = new_school
+
+    @classmethod
+    def make_admin(cls):
+        return Person("admin", "Admin", 35)
+    
+    def compare_age(self, other): # other is a Person
+        if self.age > other.age:
+            return self.first_name
+        return other.first_name
+    
+    
+    # Todo:
+    @staticmethod
+    def compare_age2(person1, person2):
+        if person1.age > person2.age:
+            return person1.first_name
+        return person2.first_name        
+
+    # Return a string
+    # self -> person
+    def __str__(self):
+        return f"Pesron's name: {self.first_name} {self.last_name}, Age {self.age}"
+
+
+
+
+def main():
+    p1 = Person("Hellen", "Green", 24) # __init__
+    print(f"Type: {type(p1)}")
+
+    p1.first_name = "Hellen"
+    p1.last_name = "Green"
+    p1.birthday()
+    print(p1)
+
+    fullname = p1.fullname()
+    Person.SCHOOL = "The U"
+
+    print(p1.SCHOOL)
+
+    Person.update_school("BYU")
+    p5 = Person.make_admin()
+    print(p5)
+
+    p2 = Person("Will", "White", 18)
+
+    older_person = p1.compare_age(p2)
+    print(f"Older person (instance method): {older_person}")
+
+    older_person = Person.compare_age2(p1, p2)
+    print(f"Older person (static method): {older_person}")
+
+
+    p3 = Person("Ben", "White")
+    print(p3.SCHOOL)
+    print(Person.SCHOOL)
+
+if __name__ == "__main__":
+    main()
+
+```
+
+## `__new__` vs `__init__`
+
+When we write:
+
+```python
+p = Person("Hellen", "Green", 24)
+```
+
+it looks like one step, but Python performs multiple steps behind the scenes.
+
+::: {.incremental}
+- `Person(...)` is the **class call** that starts object creation.
+- Python first invokes `__new__`.
+- `__new__` creates and returns a new `Person` object.
+- Python then invokes `__init__`.
+- `__init__` initializes the object's state.
+:::
+
+## `__new__` vs. `__init__`
+
+:::: {.columns}
+::: {.column width="50%"}
+<div class="concept-card">
+<h3><code>__new__</code>: Constructor</h3>
+
+- creates the object
+- returns the new object
+- runs before `__init__`
+- usually inherited from `object`
+
+</div>
+:::
+
+::: {.column width="50%"}
+<div class="concept-card">
+<h3><code>__init__</code>: Initializer</h3>
+
+- initializes an already-created object
+- receives it as `self`
+- sets initial instance state
+- runs after `__new__`
+
+</div>
+:::
+::::
+
+<div class="takeaway">
+<strong>Key idea:</strong> <code>__new__</code> creates the object; <code>__init__</code> initializes it.
+</div>
+
+## Order of Object Creation
+
+<div class="runner" data-runner="person_new_init">
+<div class="runner-head">
+<div>
+<h3>Run the order of execution</h3></div>
+<div>
+<button class="btn primary run-btn">Run</button>
+<button class="btn reset-btn">Reset</button>
+</div>
+</div>
+
+<textarea class="codebox" spellcheck="false">class Person:
+    def __new__(cls, *args, **kwargs):
+        print("__new__: create the object")
+        obj = super().__new__(cls)
+        return obj
+
+    def __init__(self, first, last, age):
+        print("__init__: initialize the object")
+        self.first_name = first
+        self.last_name = last
+        self.age = age
+
+p = Person("Hellen", "Green", 24)
+
+print("Person:", p.first_name, p.last_name, p.age)</textarea>
+
+<div class="output-title">Output</div>
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+</div>
+
+## `Person(...)`, `__new__`, and `__init__`
+
+<div class="process-flow">
+<div class="process-step"><code>Person(...)</code><span>class call starts the process</span></div>
+<div class="process-arrow">→</div>
+<div class="process-step"><code>__new__</code><span>creates and returns object</span></div>
+<div class="process-arrow">→</div>
+<div class="process-step"><code>__init__</code><span>initializes object state</span></div>
+</div>
+
+::: {.callout-note}
+Many Python resources casually call `__init__` the “constructor.” In this course, we use the more precise distinction: `__new__` constructs the object and `__init__` initializes it.
+:::
+
+## A Useful Error: `p1 + p2`
+
+If we write:
+
+```python
+print(p1 + p2)
+```
+
+Python raises a `TypeError` because `Person` does not define how `+` should work.
+
+```text
+TypeError: unsupported operand type(s) for +: 'Person' and 'Person'
+```
+
+<div class="takeaway">
+To make <code>p1 + p2</code> meaningful, the class would need to define <code>__add__</code>. We will not add it here unless operator overloading is part of the lesson.
+</div>
+
+## Shallow Copy vs. Deep Copy
+
+- A **shallow copy** creates a different `Person` object but can share nested mutable objects.
+- A **deep copy** recursively copies nested objects too.
+
+<div class="takeaway">
+<strong>Watch the references:</strong> <code>p2</code> aliases <code>p1</code>, <code>p3</code> is a shallow copy, and <code>p4</code> is a deep copy.
+</div>
+
+## Visualize Shallow and Deep Copy
+
+<div class="python-tutor-wrap">
+<iframe
+  class="python-tutor-frame"
+  title="Python Tutor visualization of shallow copy and deep copy"
+  src="https://pythontutor.com/iframe-embed.html#code=from%20copy%20import%20copy%2C%20deepcopy%0A%0Aclass%20Person%3A%0A%20%20%20%20def%20__init__%28self%2C%20first_name%2C%20last_name%2C%20age%2C%20courses%3DNone%29%3A%0A%20%20%20%20%20%20%20%20self.first_name%20%3D%20first_name%0A%20%20%20%20%20%20%20%20self.last_name%20%3D%20last_name%0A%20%20%20%20%20%20%20%20self.age%20%3D%20age%0A%20%20%20%20%20%20%20%20self.courses%20%3D%20%5B%5D%20if%20courses%20is%20None%20else%20courses%0A%0Ap1%20%3D%20Person%28%22Hope%22%2C%20%22Smith%22%2C%2020%2C%20%5B%22CS1410%22%2C%20%22CS2420%22%5D%29%0A%0Ap2%20%3D%20p1%0Ap3%20%3D%20copy%28p1%29%0Ap4%20%3D%20deepcopy%28p1%29%0A%0Ap2.first_name%20%3D%20%22Jack%22%0Ap3.courses%5B0%5D%20%3D%20%22CS1400%22%0Ap4.courses%5B0%5D%20%3D%20%22CS1030%22&mode=display&py=311&curInstr=0&codeDivWidth=430&codeDivHeight=420"
+  loading="eager"
+  allowfullscreen>
+</iframe>
+</div>
+
+<div class="python-tutor-note">
+Use <strong>Next</strong> and <strong>Previous</strong> inside Python Tutor to watch how the references and nested <code>courses</code> lists change.
+</div>
+
+## The Lifetime of Objects
+
+An object becomes a candidate for garbage collection when it can no longer be referenced.
+
+<div class="runner" data-runner="person_lifetime">
+<div class="runner-head">
+<div><h3>Follow references to one Person object</h3></div>
+<div>
+<button class="btn primary run-btn">Run</button>
+<button class="btn reset-btn">Reset</button>
+</div>
+</div>
+
+<textarea class="codebox" spellcheck="false">class Person:
+    def __init__(self, first, last, age):
+        self.first_name = first
+        self.last_name = last
+        self.age = age
+
+p = Person("Sam", "Lee", 20)
+people = [p]
+
+print("p refers to:", p.first_name)
+print("people[0] refers to:", people[0].first_name)
+
+p = None
+print("p is now:", p)
+print("object still reachable through list:", people[0].first_name)
+
+people.pop()
+print("list is now:", people)</textarea>
+
+<div class="output-title">Output</div>
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+</div>
+
+## PersonList: A Class That Stores Person Objects
+
+The original example also introduces a second class whose data is a collection of `Person` objects.
+
+:::: {.columns}
+::: {.column width="37%"}
+<div class="uml-card">
+<div class="uml-title">PersonList</div>
+
+<div class="uml-section">
+<div class="uml-section-label">Attribute</div>
+<div><code>- people: list[Person]</code></div>
+</div>
+
+<div class="uml-section">
+<div class="uml-section-label">Operations</div>
+<div><code>+ `__init__()`</code></div>
+<div><code>+ add(person_obj)</code></div>
+<div><code>+ `__str__()`: str</code></div>
+</div>
+</div>
+:::
+
+::: {.column width="63%"}
+<div class="runner" data-runner="person_list">
+<div class="runner-head">
+<div><h3>Store Person objects in a list</h3></div>
+<div>
+<button class="btn primary run-btn">Run</button>
+<button class="btn reset-btn">Reset</button>
+</div>
+</div>
+
+<textarea class="codebox" spellcheck="false">class Person:
+    def __init__(self, first, last, age):
+        self.first_name = first
+        self.last_name = last
+        self.age = age
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} ({self.age})"
+
+class PersonList:
+    def __init__(self):
+        self.people = []
+
+    def add(self, person_obj):
+        self.people.append(person_obj)
+
+    def __str__(self):
+        return "\n".join(str(p) for p in self.people)
+
+group = PersonList()
+group.add(Person("Hope", "Smith", 20))
+group.add(Person("Jack", "Jones", 19))
+
+print(group)</textarea>
+
+<div class="output-title">Output</div>
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+</div>
+:::
+::::
+
+## Separate Classes into Different Files
+
+```python
+# person_list.py person.py
+from person import Person
+```
+
+```python
+# person_demo.py person_list.py
+from person_list import PersonList
+```
+
+
+
+## Class, Object, Attributes, and State
+
+:::: {.columns}
+::: {.column width="48%"}
+<div class="concept-card">
+<h3>Class</h3>
+A type or abstraction that defines attributes and methods.
+
+<h3>Object / Instance</h3>
+A unique object created from a class.
+
+<h3>Attribute</h3>
+A data element stored in an object.
+
+<h3>State</h3>
+The current values of an object's attributes.
+</div>
+:::
+
+::: {.column width="52%"}
+```python
+p = Person("Hellen", "Green", 24)
+```
+
+<div class="state-card">
+<div><strong>Object:</strong> <code>p</code></div>
+<div><code>first_name = "Hellen"</code></div>
+<div><code>last_name = "Green"</code></div>
+<div><code>age = 24</code></div>
+</div>
+
+If `p.age` changes, the object is still the same object, but its **state** has changed.
+:::
+::::
+
+
+## Class Models… Method Models…
+
+:::: {.columns}
+::: {.column width="50%"}
+<div class="concept-card">
+<h3>Class models…</h3>
+
+- a thing
+- a kind/type of thing
+- attributes of a thing
+
+In a problem description, look for **nouns**.
+</div>
+:::
+
+::: {.column width="50%"}
+<div class="concept-card">
+<h3>Method models…</h3>
+
+- an action
+- an operation
+- an algorithm
+- behavior of a thing
+
+In a problem description, look for **verbs**.
+</div>
+:::
+::::
+
+## Recipe for Making a Class
+
+::: {.incremental}
+- Before writing code, identify the object's **attributes** and **behavior**.
+- Choose an appropriate class name.
+- Choose appropriate data types for attributes.
+- Develop the class interface: a short list of methods.
+- Write a small **use case** showing how the class should be used.
+- Implement `__init__`, then add and test methods incrementally.
+- Add `__str__` to make objects easier to inspect and debug.
+- Document the module, class, and methods.
+:::
+
+## Style Reminders
+
+- Class names use **CamelCase**
+- Method names use **snake_case**
+- Use module docstrings
+- Use class docstrings
+- Use method docstrings
