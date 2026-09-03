@@ -193,7 +193,7 @@ print(p.fullname())</textarea>
 
 ```python
 class Person:
-    def __init__(self, first, last, age):
+    def __init__(self, first_name, last_name, age):
         self.first_name = first_name
         self.last_name = last_name
         self.age = age
@@ -231,9 +231,9 @@ self.age = 24
 </div>
 
 <textarea class="codebox" spellcheck="false">class Person:
-    def __init__(self, first, last, age=18):
-        self.first_name = first
-        self.last_name = last
+    def __init__(self, first_name, last_name, age=18):
+        self.first_name = first_name
+        self.last_name = last_name
         self.age = age
 
 
@@ -437,64 +437,6 @@ class Person:
 </div>-->
 
 
-## Accessors and Mutators
-
-:::: {.columns}
-::: {.column width="42%"}
-<div class="concept-card">
-<h3>Accessor</h3>
-Reads information without changing the object.
-
-Example:
-
-```python
-def get_age(self):
-    return self.age
-```
-
-<h3>Mutator</h3>
-Changes the object's state.
-
-```python
-def birthday(self):
-    self.age += 1
-```
-</div>
-:::
-
-::: {.column width="58%"}
-<div class="runner" data-runner="person_accessor_mutator">
-<div class="runner-head">
-<div><h3>Watch the state change</h3></div>
-<div>
-<button class="btn primary run-btn">Run</button>
-<button class="btn reset-btn">Reset</button>
-</div>
-</div>
-
-<textarea class="codebox" spellcheck="false">class Person:
-    def __init__(self, first, last, age):
-        self.first_name = first
-        self.last_name = last
-        self.age = age
-
-    def get_age(self):
-        return self.age
-
-    def birthday(self):
-        self.age += 1
-
-p = Person("Hellen", "Green", 24)
-
-print("before:", p.get_age())
-p.birthday()
-print("after:", p.get_age())</textarea>
-
-<div class="output-title">Output</div>
-<pre class="output">Click Run to execute this Python code in the browser.</pre>
-</div>
-:::
-::::
 
 
 
@@ -582,6 +524,66 @@ print(admin)</textarea>
 <div class="output-title">Output</div>
 <pre class="output">Click Run to execute this Python code in the browser.</pre>
 </div>
+
+## Accessors and Mutators
+
+:::: {.columns}
+::: {.column width="42%"}
+<div class="concept-card">
+<h3>Accessor</h3>
+Reads information without changing the object.
+
+Example:
+
+```python
+def get_age(self):
+    return self.age
+```
+
+<h3>Mutator</h3>
+Changes the object's state.
+
+```python
+def birthday(self):
+    self.age += 1
+```
+</div>
+:::
+
+::: {.column width="58%"}
+<div class="runner" data-runner="person_accessor_mutator">
+<div class="runner-head">
+<div><h3>Watch the state change</h3></div>
+<div>
+<button class="btn primary run-btn">Run</button>
+<button class="btn reset-btn">Reset</button>
+</div>
+</div>
+
+<textarea class="codebox" spellcheck="false">class Person:
+    def __init__(self, first, last, age):
+        self.first_name = first
+        self.last_name = last
+        self.age = age
+
+    def get_age(self):
+        return self.age
+
+    def birthday(self):
+        self.age += 1
+
+p = Person("Hellen", "Green", 24)
+
+print("before:", p.get_age())
+p.birthday()
+print("after:", p.get_age())</textarea>
+
+<div class="output-title">Output</div>
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+</div>
+:::
+::::
+
 
 ## Passing Another Object to an Instance Method
 
@@ -731,8 +733,6 @@ class Person:
             return self.first_name
         return other.first_name
     
-    
-    # Todo:
     @staticmethod
     def compare_age2(person1, person2):
         if person1.age > person2.age:
@@ -801,7 +801,7 @@ it looks like one step, but Python performs multiple steps behind the scenes.
 - `__init__` initializes the object's state.
 :::
 
-## `__new__` vs. `__init__`
+<!--## `__new__` vs. `__init__`
 
 :::: {.columns}
 ::: {.column width="50%"}
@@ -827,10 +827,10 @@ it looks like one step, but Python performs multiple steps behind the scenes.
 
 </div>
 :::
-::::
+::::-->
 
 <div class="takeaway">
-<strong>Key idea:</strong> <code>__new__</code> creates the object; <code>__init__</code> initializes it.
+<strong>Key idea:</strong> `__new__` creates the object; `__init__` initializes it.
 </div>
 
 ## Order of Object Creation
@@ -868,18 +868,18 @@ print("Person:", p.first_name, p.last_name, p.age)</textarea>
 ## `Person(...)`, `__new__`, and `__init__`
 
 <div class="process-flow">
-<div class="process-step"><code>Person(...)</code><span>class call starts the process</span></div>
+<div class="process-step">`Person(...)`<span>class call starts the process</span></div>
 <div class="process-arrow">→</div>
-<div class="process-step"><code>__new__</code><span>creates and returns object</span></div>
+<div class="process-step">`__new__`<span>creates and returns object</span></div>
 <div class="process-arrow">→</div>
-<div class="process-step"><code>__init__</code><span>initializes object state</span></div>
+<div class="process-step">`__init__`><span>initializes object state</span></div>
 </div>
 
 ::: {.callout-note}
 Many Python resources casually call `__init__` the “constructor.” In this course, we use the more precise distinction: `__new__` constructs the object and `__init__` initializes it.
 :::
 
-## A Useful Error: `p1 + p2`
+<!--## A Useful Error: `p1 + p2`
 
 If we write:
 
@@ -895,16 +895,14 @@ TypeError: unsupported operand type(s) for +: 'Person' and 'Person'
 
 <div class="takeaway">
 To make <code>p1 + p2</code> meaningful, the class would need to define <code>__add__</code>. We will not add it here unless operator overloading is part of the lesson.
-</div>
+</div>-->
 
 ## Shallow Copy vs. Deep Copy
 
 - A **shallow copy** creates a different `Person` object but can share nested mutable objects.
 - A **deep copy** recursively copies nested objects too.
 
-<div class="takeaway">
-<strong>Watch the references:</strong> <code>p2</code> aliases <code>p1</code>, <code>p3</code> is a shallow copy, and <code>p4</code> is a deep copy.
-</div>
+
 
 ## Visualize Shallow and Deep Copy
 
@@ -916,6 +914,9 @@ To make <code>p1 + p2</code> meaningful, the class would need to define <code>__
   loading="eager"
   allowfullscreen>
 </iframe>
+<div class="takeaway">
+<strong>Watch the references:</strong> <code>p2</code> aliases <code>p1</code>, <code>p3</code> is a shallow copy, and <code>p4</code> is a deep copy.
+</div>
 </div>
 
 <div class="python-tutor-note">

@@ -427,7 +427,7 @@ Output
 <h2>The <code>__init__</code> Initializer</h2>
 <p><code>__init__</code> runs after a new object has been created.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-label="1"></a><span class="kw">class</span> Person:</span>
-<span id="cb1-2"><a href="" aria-label="2"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, first, last, age):</span>
+<span id="cb1-2"><a href="" aria-label="2"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, first_name, last_name, age):</span>
 <span id="cb1-3"><a href="" aria-label="3"></a>        <span class="va">self</span>.first_name <span class="op">=</span> first_name</span>
 <span id="cb1-4"><a href="" aria-label="4"></a>        <span class="va">self</span>.last_name <span class="op">=</span> last_name</span>
 <span id="cb1-5"><a href="" aria-label="5"></a>        <span class="va">self</span>.age <span class="op">=</span> age</span>
@@ -464,9 +464,9 @@ Reset
 </div>
 </div>
 <textarea class="codebox" spellcheck="false">class Person:
-    def __init__(self, first, last, age=18):
-        self.first_name = first
-        self.last_name = last
+    def __init__(self, first_name, last_name, age=18):
+        self.first_name = first_name
+        self.last_name = last_name
         self.age = age
 
 
@@ -664,66 +664,6 @@ Class attribute
 </div>
 </div>-->
 </section>
-<section id="accessors-and-mutators" class="slide level2">
-<h2>Accessors and Mutators</h2>
-<div class="columns">
-<div class="column" style="width:42%;">
-<div class="concept-card">
-<h3>
-Accessor
-</h3>
-<p>Reads information without changing the object.</p>
-<p>Example:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="" aria-label="1"></a><span class="kw">def</span> get_age(<span class="va">self</span>):</span>
-<span id="cb7-2"><a href="" aria-label="2"></a>    <span class="cf">return</span> <span class="va">self</span>.age</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<h3>
-Mutator
-</h3>
-<p>Changes the object’s state.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="" aria-label="1"></a><span class="kw">def</span> birthday(<span class="va">self</span>):</span>
-<span id="cb8-2"><a href="" aria-label="2"></a>    <span class="va">self</span>.age <span class="op">+=</span> <span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:58%;">
-<div class="runner" data-runner="person_accessor_mutator">
-<div class="runner-head">
-<div>
-<h3>
-Watch the state change
-</h3>
-</div>
-<div>
-<button class="btn primary run-btn">
-Run
-</button>
-<button class="btn reset-btn">
-Reset
-</button>
-</div>
-</div>
-<textarea class="codebox" spellcheck="false">class Person:
-    def __init__(self, first, last, age):
-        self.first_name = first
-        self.last_name = last
-        self.age = age
-
-    def get_age(self):
-        return self.age
-
-    def birthday(self):
-        self.age += 1
-
-p = Person("Hellen", "Green", 24)
-
-print("before:", p.get_age())
-p.birthday()
-print("after:", p.get_age())</textarea>
-<div class="output-title">
-Output
-</div>
-<pre class="output">Click Run to execute this Python code in the browser.</pre>
-</div>
-</div></div>
-</section>
 <section id="updating-a-class-attribute" class="slide level2">
 <h2>Updating a Class Attribute</h2>
 <div class="runner" data-runner="update_school">
@@ -819,6 +759,66 @@ Output
 </div>
 <pre class="output">Click Run to execute this Python code in the browser.</pre>
 </div>
+</section>
+<section id="accessors-and-mutators" class="slide level2">
+<h2>Accessors and Mutators</h2>
+<div class="columns">
+<div class="column" style="width:42%;">
+<div class="concept-card">
+<h3>
+Accessor
+</h3>
+<p>Reads information without changing the object.</p>
+<p>Example:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="" aria-label="1"></a><span class="kw">def</span> get_age(<span class="va">self</span>):</span>
+<span id="cb7-2"><a href="" aria-label="2"></a>    <span class="cf">return</span> <span class="va">self</span>.age</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<h3>
+Mutator
+</h3>
+<p>Changes the object’s state.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="" aria-label="1"></a><span class="kw">def</span> birthday(<span class="va">self</span>):</span>
+<span id="cb8-2"><a href="" aria-label="2"></a>    <span class="va">self</span>.age <span class="op">+=</span> <span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:58%;">
+<div class="runner" data-runner="person_accessor_mutator">
+<div class="runner-head">
+<div>
+<h3>
+Watch the state change
+</h3>
+</div>
+<div>
+<button class="btn primary run-btn">
+Run
+</button>
+<button class="btn reset-btn">
+Reset
+</button>
+</div>
+</div>
+<textarea class="codebox" spellcheck="false">class Person:
+    def __init__(self, first, last, age):
+        self.first_name = first
+        self.last_name = last
+        self.age = age
+
+    def get_age(self):
+        return self.age
+
+    def birthday(self):
+        self.age += 1
+
+p = Person("Hellen", "Green", 24)
+
+print("before:", p.get_age())
+p.birthday()
+print("after:", p.get_age())</textarea>
+<div class="output-title">
+Output
+</div>
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+</div>
+</div></div>
 </section>
 <section id="passing-another-object-to-an-instance-method" class="slide level2">
 <h2>Passing Another Object to an Instance Method</h2>
@@ -1013,55 +1013,53 @@ Static method
 <span id="cb9-33"><a href="" aria-label="33"></a>            <span class="cf">return</span> <span class="va">self</span>.first_name</span>
 <span id="cb9-34"><a href="" aria-label="34"></a>        <span class="cf">return</span> other.first_name</span>
 <span id="cb9-35"><a href="" aria-label="35"></a>    </span>
-<span id="cb9-36"><a href="" aria-label="36"></a>    </span>
-<span id="cb9-37"><a href="" aria-label="37"></a>    <span class="co"># Todo:</span></span>
-<span id="cb9-38"><a href="" aria-label="38"></a>    <span class="at">@staticmethod</span></span>
-<span id="cb9-39"><a href="" aria-label="39"></a>    <span class="kw">def</span> compare_age2(person1, person2):</span>
-<span id="cb9-40"><a href="" aria-label="40"></a>        <span class="cf">if</span> person1.age <span class="op">&gt;</span> person2.age:</span>
-<span id="cb9-41"><a href="" aria-label="41"></a>            <span class="cf">return</span> person1.first_name</span>
-<span id="cb9-42"><a href="" aria-label="42"></a>        <span class="cf">return</span> person2.first_name        </span>
-<span id="cb9-43"><a href="" aria-label="43"></a></span>
-<span id="cb9-44"><a href="" aria-label="44"></a>    <span class="co"># Return a string</span></span>
-<span id="cb9-45"><a href="" aria-label="45"></a>    <span class="co"># self -&gt; person</span></span>
-<span id="cb9-46"><a href="" aria-label="46"></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</span>
-<span id="cb9-47"><a href="" aria-label="47"></a>        <span class="cf">return</span> <span class="ss">f"Pesron's name: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>first_name<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>last_name<span class="sc">}</span><span class="ss">, Age </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>age<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb9-36"><a href="" aria-label="36"></a>    <span class="at">@staticmethod</span></span>
+<span id="cb9-37"><a href="" aria-label="37"></a>    <span class="kw">def</span> compare_age2(person1, person2):</span>
+<span id="cb9-38"><a href="" aria-label="38"></a>        <span class="cf">if</span> person1.age <span class="op">&gt;</span> person2.age:</span>
+<span id="cb9-39"><a href="" aria-label="39"></a>            <span class="cf">return</span> person1.first_name</span>
+<span id="cb9-40"><a href="" aria-label="40"></a>        <span class="cf">return</span> person2.first_name        </span>
+<span id="cb9-41"><a href="" aria-label="41"></a></span>
+<span id="cb9-42"><a href="" aria-label="42"></a>    <span class="co"># Return a string</span></span>
+<span id="cb9-43"><a href="" aria-label="43"></a>    <span class="co"># self -&gt; person</span></span>
+<span id="cb9-44"><a href="" aria-label="44"></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</span>
+<span id="cb9-45"><a href="" aria-label="45"></a>        <span class="cf">return</span> <span class="ss">f"Pesron's name: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>first_name<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>last_name<span class="sc">}</span><span class="ss">, Age </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>age<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb9-46"><a href="" aria-label="46"></a></span>
+<span id="cb9-47"><a href="" aria-label="47"></a></span>
 <span id="cb9-48"><a href="" aria-label="48"></a></span>
 <span id="cb9-49"><a href="" aria-label="49"></a></span>
-<span id="cb9-50"><a href="" aria-label="50"></a></span>
-<span id="cb9-51"><a href="" aria-label="51"></a></span>
-<span id="cb9-52"><a href="" aria-label="52"></a><span class="kw">def</span> main():</span>
-<span id="cb9-53"><a href="" aria-label="53"></a>    p1 <span class="op">=</span> Person(<span class="st">"Hellen"</span>, <span class="st">"Green"</span>, <span class="dv">24</span>) <span class="co"># __init__</span></span>
-<span id="cb9-54"><a href="" aria-label="54"></a>    <span class="bu">print</span>(<span class="ss">f"Type: </span><span class="sc">{</span><span class="bu">type</span>(p1)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb9-55"><a href="" aria-label="55"></a></span>
-<span id="cb9-56"><a href="" aria-label="56"></a>    p1.first_name <span class="op">=</span> <span class="st">"Hellen"</span></span>
-<span id="cb9-57"><a href="" aria-label="57"></a>    p1.last_name <span class="op">=</span> <span class="st">"Green"</span></span>
-<span id="cb9-58"><a href="" aria-label="58"></a>    p1.birthday()</span>
-<span id="cb9-59"><a href="" aria-label="59"></a>    <span class="bu">print</span>(p1)</span>
-<span id="cb9-60"><a href="" aria-label="60"></a></span>
-<span id="cb9-61"><a href="" aria-label="61"></a>    fullname <span class="op">=</span> p1.fullname()</span>
-<span id="cb9-62"><a href="" aria-label="62"></a>    Person.SCHOOL <span class="op">=</span> <span class="st">"The U"</span></span>
+<span id="cb9-50"><a href="" aria-label="50"></a><span class="kw">def</span> main():</span>
+<span id="cb9-51"><a href="" aria-label="51"></a>    p1 <span class="op">=</span> Person(<span class="st">"Hellen"</span>, <span class="st">"Green"</span>, <span class="dv">24</span>) <span class="co"># __init__</span></span>
+<span id="cb9-52"><a href="" aria-label="52"></a>    <span class="bu">print</span>(<span class="ss">f"Type: </span><span class="sc">{</span><span class="bu">type</span>(p1)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-53"><a href="" aria-label="53"></a></span>
+<span id="cb9-54"><a href="" aria-label="54"></a>    p1.first_name <span class="op">=</span> <span class="st">"Hellen"</span></span>
+<span id="cb9-55"><a href="" aria-label="55"></a>    p1.last_name <span class="op">=</span> <span class="st">"Green"</span></span>
+<span id="cb9-56"><a href="" aria-label="56"></a>    p1.birthday()</span>
+<span id="cb9-57"><a href="" aria-label="57"></a>    <span class="bu">print</span>(p1)</span>
+<span id="cb9-58"><a href="" aria-label="58"></a></span>
+<span id="cb9-59"><a href="" aria-label="59"></a>    fullname <span class="op">=</span> p1.fullname()</span>
+<span id="cb9-60"><a href="" aria-label="60"></a>    Person.SCHOOL <span class="op">=</span> <span class="st">"The U"</span></span>
+<span id="cb9-61"><a href="" aria-label="61"></a></span>
+<span id="cb9-62"><a href="" aria-label="62"></a>    <span class="bu">print</span>(p1.SCHOOL)</span>
 <span id="cb9-63"><a href="" aria-label="63"></a></span>
-<span id="cb9-64"><a href="" aria-label="64"></a>    <span class="bu">print</span>(p1.SCHOOL)</span>
-<span id="cb9-65"><a href="" aria-label="65"></a></span>
-<span id="cb9-66"><a href="" aria-label="66"></a>    Person.update_school(<span class="st">"BYU"</span>)</span>
-<span id="cb9-67"><a href="" aria-label="67"></a>    p5 <span class="op">=</span> Person.make_admin()</span>
-<span id="cb9-68"><a href="" aria-label="68"></a>    <span class="bu">print</span>(p5)</span>
+<span id="cb9-64"><a href="" aria-label="64"></a>    Person.update_school(<span class="st">"BYU"</span>)</span>
+<span id="cb9-65"><a href="" aria-label="65"></a>    p5 <span class="op">=</span> Person.make_admin()</span>
+<span id="cb9-66"><a href="" aria-label="66"></a>    <span class="bu">print</span>(p5)</span>
+<span id="cb9-67"><a href="" aria-label="67"></a></span>
+<span id="cb9-68"><a href="" aria-label="68"></a>    p2 <span class="op">=</span> Person(<span class="st">"Will"</span>, <span class="st">"White"</span>, <span class="dv">18</span>)</span>
 <span id="cb9-69"><a href="" aria-label="69"></a></span>
-<span id="cb9-70"><a href="" aria-label="70"></a>    p2 <span class="op">=</span> Person(<span class="st">"Will"</span>, <span class="st">"White"</span>, <span class="dv">18</span>)</span>
-<span id="cb9-71"><a href="" aria-label="71"></a></span>
-<span id="cb9-72"><a href="" aria-label="72"></a>    older_person <span class="op">=</span> p1.compare_age(p2)</span>
-<span id="cb9-73"><a href="" aria-label="73"></a>    <span class="bu">print</span>(<span class="ss">f"Older person (instance method): </span><span class="sc">{</span>older_person<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb9-74"><a href="" aria-label="74"></a></span>
-<span id="cb9-75"><a href="" aria-label="75"></a>    older_person <span class="op">=</span> Person.compare_age2(p1, p2)</span>
-<span id="cb9-76"><a href="" aria-label="76"></a>    <span class="bu">print</span>(<span class="ss">f"Older person (static method): </span><span class="sc">{</span>older_person<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb9-77"><a href="" aria-label="77"></a></span>
-<span id="cb9-78"><a href="" aria-label="78"></a></span>
-<span id="cb9-79"><a href="" aria-label="79"></a>    p3 <span class="op">=</span> Person(<span class="st">"Ben"</span>, <span class="st">"White"</span>)</span>
-<span id="cb9-80"><a href="" aria-label="80"></a>    <span class="bu">print</span>(p3.SCHOOL)</span>
-<span id="cb9-81"><a href="" aria-label="81"></a>    <span class="bu">print</span>(Person.SCHOOL)</span>
-<span id="cb9-82"><a href="" aria-label="82"></a></span>
-<span id="cb9-83"><a href="" aria-label="83"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
-<span id="cb9-84"><a href="" aria-label="84"></a>    main()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-70"><a href="" aria-label="70"></a>    older_person <span class="op">=</span> p1.compare_age(p2)</span>
+<span id="cb9-71"><a href="" aria-label="71"></a>    <span class="bu">print</span>(<span class="ss">f"Older person (instance method): </span><span class="sc">{</span>older_person<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-72"><a href="" aria-label="72"></a></span>
+<span id="cb9-73"><a href="" aria-label="73"></a>    older_person <span class="op">=</span> Person.compare_age2(p1, p2)</span>
+<span id="cb9-74"><a href="" aria-label="74"></a>    <span class="bu">print</span>(<span class="ss">f"Older person (static method): </span><span class="sc">{</span>older_person<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-75"><a href="" aria-label="75"></a></span>
+<span id="cb9-76"><a href="" aria-label="76"></a></span>
+<span id="cb9-77"><a href="" aria-label="77"></a>    p3 <span class="op">=</span> Person(<span class="st">"Ben"</span>, <span class="st">"White"</span>)</span>
+<span id="cb9-78"><a href="" aria-label="78"></a>    <span class="bu">print</span>(p3.SCHOOL)</span>
+<span id="cb9-79"><a href="" aria-label="79"></a>    <span class="bu">print</span>(Person.SCHOOL)</span>
+<span id="cb9-80"><a href="" aria-label="80"></a></span>
+<span id="cb9-81"><a href="" aria-label="81"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb9-82"><a href="" aria-label="82"></a>    main()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="new__-vs-__init__" class="slide level2">
 <h2><code>__new__</code> vs <code>__init__</code></h2>
@@ -1075,37 +1073,35 @@ Static method
 <li class="fragment">Python then invokes <code>__init__</code>.</li>
 <li class="fragment"><code>__init__</code> initializes the object’s state.</li>
 </ul>
-</section>
-<section id="new__-vs.-__init__" class="slide level2">
-<h2><code>__new__</code> vs.&nbsp;<code>__init__</code></h2>
-<div class="columns">
-<div class="column" style="width:50%;">
+<!--## `__new__` vs. `__init__`
+
+:::: {.columns}
+::: {.column width="50%"}
 <div class="concept-card">
-<h3>
-<code><strong>new</strong></code>: Constructor
-</h3>
-<ul>
-<li>creates the object</li>
-<li>returns the new object</li>
-<li>runs before <code>__init__</code></li>
-<li>usually inherited from <code>object</code></li>
-</ul>
+<h3><code>__new__</code>: Constructor</h3>
+
+- creates the object
+- returns the new object
+- runs before `__init__`
+- usually inherited from `object`
+
 </div>
-</div><div class="column" style="width:50%;">
+:::
+
+::: {.column width="50%"}
 <div class="concept-card">
-<h3>
-<code><strong>init</strong></code>: Initializer
-</h3>
-<ul>
-<li>initializes an already-created object</li>
-<li>receives it as <code>self</code></li>
-<li>sets initial instance state</li>
-<li>runs after <code>__new__</code></li>
-</ul>
+<h3><code>__init__</code>: Initializer</h3>
+
+- initializes an already-created object
+- receives it as `self`
+- sets initial instance state
+- runs after `__new__`
+
 </div>
-</div></div>
+:::
+::::-->
 <div class="takeaway">
-<p><strong>Key idea:</strong> <code><strong>new</strong></code> creates the object; <code><strong>init</strong></code> initializes it.</p>
+<p><strong>Key idea:</strong> <code>__new__</code> creates the object; <code>__init__</code> initializes it.</p>
 </div>
 </section>
 <section id="order-of-object-creation" class="slide level2">
@@ -1151,19 +1147,19 @@ Output
 <h2><code>Person(...)</code>, <code>__new__</code>, and <code>__init__</code></h2>
 <div class="process-flow">
 <div class="process-step">
-<code>Person(…)</code><span>class call starts the process</span>
+<code>Person(...)</code><span>class call starts the process</span>
 </div>
 <div class="process-arrow">
 →
 </div>
 <div class="process-step">
-<code><strong>new</strong></code><span>creates and returns object</span>
+<code>__new__</code><span>creates and returns object</span>
 </div>
 <div class="process-arrow">
 →
 </div>
 <div class="process-step">
-<code><strong>init</strong></code><span>initializes object state</span>
+<code>__init__</code>&gt;<span>initializes object state</span>
 </div>
 </div>
 <div class="callout callout-note callout-titled callout-style-default">
@@ -1179,16 +1175,23 @@ Output
 </div>
 </div>
 </div>
-</section>
-<section id="a-useful-error-p1-p2" class="slide level2">
-<h2>A Useful Error: <code>p1 + p2</code></h2>
-<p>If we write:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="" aria-label="1"></a><span class="bu">print</span>(p1 <span class="op">+</span> p2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Python raises a <code>TypeError</code> because <code>Person</code> does not define how <code>+</code> should work.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb12-1"><a href="" aria-label="1"></a>TypeError: unsupported operand type(s) for +: 'Person' and 'Person'</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<!--## A Useful Error: `p1 + p2`
+
+If we write:
+
+```python
+print(p1 + p2)
+```
+
+Python raises a `TypeError` because `Person` does not define how `+` should work.
+
+```text
+TypeError: unsupported operand type(s) for +: 'Person' and 'Person'
+```
+
 <div class="takeaway">
-<p>To make <code>p1 + p2</code> meaningful, the class would need to define <code><strong>add</strong></code>. We will not add it here unless operator overloading is part of the lesson.</p>
-</div>
+To make <code>p1 + p2</code> meaningful, the class would need to define <code>__add__</code>. We will not add it here unless operator overloading is part of the lesson.
+</div>-->
 </section>
 <section id="shallow-copy-vs.-deep-copy" class="slide level2">
 <h2>Shallow Copy vs.&nbsp;Deep Copy</h2>
@@ -1196,15 +1199,15 @@ Output
 <li>A <strong>shallow copy</strong> creates a different <code>Person</code> object but can share nested mutable objects.</li>
 <li>A <strong>deep copy</strong> recursively copies nested objects too.</li>
 </ul>
-<div class="takeaway">
-<p><strong>Watch the references:</strong> <code>p2</code> aliases <code>p1</code>, <code>p3</code> is a shallow copy, and <code>p4</code> is a deep copy.</p>
-</div>
 </section>
 <section id="visualize-shallow-and-deep-copy" class="slide level2">
 <h2>Visualize Shallow and Deep Copy</h2>
 <div class="python-tutor-wrap">
 <iframe class="python-tutor-frame" title="Python Tutor visualization of shallow copy and deep copy" src="https://pythontutor.com/iframe-embed.html#code=from%20copy%20import%20copy%2C%20deepcopy%0A%0Aclass%20Person%3A%0A%20%20%20%20def%20__init__%28self%2C%20first_name%2C%20last_name%2C%20age%2C%20courses%3DNone%29%3A%0A%20%20%20%20%20%20%20%20self.first_name%20%3D%20first_name%0A%20%20%20%20%20%20%20%20self.last_name%20%3D%20last_name%0A%20%20%20%20%20%20%20%20self.age%20%3D%20age%0A%20%20%20%20%20%20%20%20self.courses%20%3D%20%5B%5D%20if%20courses%20is%20None%20else%20courses%0A%0Ap1%20%3D%20Person%28%22Hope%22%2C%20%22Smith%22%2C%2020%2C%20%5B%22CS1410%22%2C%20%22CS2420%22%5D%29%0A%0Ap2%20%3D%20p1%0Ap3%20%3D%20copy%28p1%29%0Ap4%20%3D%20deepcopy%28p1%29%0A%0Ap2.first_name%20%3D%20%22Jack%22%0Ap3.courses%5B0%5D%20%3D%20%22CS1400%22%0Ap4.courses%5B0%5D%20%3D%20%22CS1030%22&amp;mode=display&amp;py=311&amp;curInstr=0&amp;codeDivWidth=430&amp;codeDivHeight=420" loading="eager" allowfullscreen="">
 </iframe>
+<div class="takeaway">
+<p><strong>Watch the references:</strong> <code>p2</code> aliases <code>p1</code>, <code>p3</code> is a shallow copy, and <code>p4</code> is a deep copy.</p>
+</div>
 </div>
 <div class="python-tutor-note">
 <p>Use <strong>Next</strong> and <strong>Previous</strong> inside Python Tutor to watch how the references and nested <code>courses</code> lists change.</p>
@@ -1335,10 +1338,10 @@ Output
 </section>
 <section id="separate-classes-into-different-files" class="slide level2">
 <h2>Separate Classes into Different Files</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="" aria-label="1"></a><span class="co"># person_list.py person.py</span></span>
-<span id="cb13-2"><a href="" aria-label="2"></a><span class="im">from</span> person <span class="im">import</span> Person</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="" aria-label="1"></a><span class="co"># person_demo.py person_list.py</span></span>
-<span id="cb14-2"><a href="" aria-label="2"></a><span class="im">from</span> person_list <span class="im">import</span> PersonList</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="" aria-label="1"></a><span class="co"># person_list.py person.py</span></span>
+<span id="cb11-2"><a href="" aria-label="2"></a><span class="im">from</span> person <span class="im">import</span> Person</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="" aria-label="1"></a><span class="co"># person_demo.py person_list.py</span></span>
+<span id="cb12-2"><a href="" aria-label="2"></a><span class="im">from</span> person_list <span class="im">import</span> PersonList</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="class-object-attributes-and-state" class="slide level2">
 <h2>Class, Object, Attributes, and State</h2>
@@ -1363,7 +1366,7 @@ State
 <p>The current values of an object’s attributes.</p>
 </div>
 </div><div class="column" style="width:52%;">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="" aria-label="1"></a>p <span class="op">=</span> Person(<span class="st">"Hellen"</span>, <span class="st">"Green"</span>, <span class="dv">24</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="" aria-label="1"></a>p <span class="op">=</span> Person(<span class="st">"Hellen"</span>, <span class="st">"Green"</span>, <span class="dv">24</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="state-card">
 <div>
 <strong>Object:</strong> <code>p</code>
