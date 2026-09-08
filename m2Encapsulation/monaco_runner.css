@@ -1,0 +1,62 @@
+
+.runner {
+  background: #fff;
+  border: 1px solid #d8d1bd;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(35,49,57,.09);
+  overflow: hidden;
+  margin: .55rem 0;
+}
+.runner-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .55rem .75rem;
+  background: #f2f6f8;
+  border-bottom: 1px solid #d9e2e7;
+}
+.runner-label { font-size: .57em; color: #5f7078; font-weight: 700; }
+.runner-actions { display: flex; gap: .45rem; }
+.btn {
+  border: 1px solid #b9c7cf;
+  background: white;
+  color: #27414f;
+  border-radius: 8px;
+  padding: .34rem .75rem;
+  font-size: .52em;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn.primary { background: #1f6fa8; color: white; border-color: #1f6fa8; }
+.btn:hover { filter: brightness(.97); }
+.codebox { display: none; }
+.monaco-host { width: 100%; height: 300px; }
+.output-title {
+  padding: .38rem .75rem .2rem;
+  font-size: .50em;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: #667781;
+  background: #fafbfb;
+  border-top: 1px solid #e1e6e8;
+}
+.runner .output {
+  margin: 0;
+  width: auto;
+  min-height: 54px;
+  max-height: 118px;
+  overflow: auto;
+  border-radius: 0;
+  box-shadow: none;
+  background: #111923;
+  color: #e6eef2;
+  padding: .55rem .75rem;
+  font-size: .50em;
+  line-height: 1.3;
+  white-space: pre-wrap;
+}
+@media (max-height: 760px) {
+  .monaco-host { height: 260px; }
+  .runner .output { max-height: 90px; }
+}

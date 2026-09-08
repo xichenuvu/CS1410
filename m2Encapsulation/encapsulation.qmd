@@ -1,0 +1,668 @@
+---
+title: "Encapsulation"
+subtitle: "CS 1410"
+author: "Xi Chen"
+format:
+  revealjs:
+    theme: simple
+    css:
+      - style.css
+      - monaco_runner.css
+    include-after-body: monaco_runner.html
+    transition: fade
+    slide-number: true
+    width: 1280
+    height: 720
+    center: false
+    controls: true
+    progress: true
+    code-line-numbers: false
+    highlight-style: github
+---
+
+## Encapsulation
+
+:::: concept-card
+::: incremental
+- groups related data and methods together in a class
+- controls how the internal state of an object is accessed and modified
+:::
+::::
+
+## Starting with a Simple Person Class
+
+::::::::: {.runner data-runner="encap_1"}
+:::::: runner-head
+:::: {}
+::: runner-label
+Editable Python
+:::
+::::
+
+::: runner-actions
+<button class="btn primary run-btn">
+
+Run
+
+</button>
+
+<button class="btn reset-btn">
+
+Reset
+
+</button>
+:::
+::::::
+
+```{=html}
+<textarea class="codebox" spellcheck="false">class Person:
+    def __init__(self, first, last, age=18):
+        self.first = first
+        self.last = last
+        self.age = age
+
+    def __str__(self):
+        return f&quot;First name is {self.first}, last name is {self.last}, age is {self.age}&quot;
+p1 = Person(&quot;Jimmy&quot;, &quot;Green&quot;)
+
+p1.age = True
+p1.first = [2, 5]
+
+print(p1)</textarea>
+```
+
+::: monaco-host
+:::
+
+::: output-title
+Output
+:::
+
+```{=html}
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+```
+:::::::::
+
+### What is the problem?
+
+## "Private" Attributes by Convention 1
+
+::: concept-card
+In Python, a **single underscore** before an attribute name is a convention that means:
+
+> "This attribute is intended for internal use. Do not access it directly from outside the class."
+
+Python does **not** prevent outside code from accessing it.
+:::
+
+## "Private" Attributes by Convention 2
+
+::::::::: {.runner data-runner="encap_2"}
+:::::: runner-head
+:::: {}
+::: runner-label
+Editable Python
+:::
+::::
+
+::: runner-actions
+<button class="btn primary run-btn">
+
+Run
+
+</button>
+
+<button class="btn reset-btn">
+
+Reset
+
+</button>
+:::
+::::::
+
+```{=html}
+<textarea class="codebox" spellcheck="false">class Person:
+    def __init__(self, first, last, age=18):
+        self.first = first
+        self._last = last
+        self.age = age
+
+    def __str__(self):
+        return f&quot;First name is {self.first}, last name is {self._last}, age is {self.age}&quot;
+p1 = Person(&quot;Jimmy&quot;, &quot;Green&quot;)
+
+print(p1._last)        
+</textarea>
+```
+
+::: monaco-host
+:::
+
+::: output-title
+Output
+:::
+
+```{=html}
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+```
+:::::::::
+
+The single underscore is a **programming convention**, not an access restriction.
+
+## Double Underscore and Name Mangling 1
+
+::: concept-card
+A double underscore before an attribute name triggers **name mangling**.
+
+For example:
+
+``` python
+self.__age
+```
+
+Python changes the internal name so that it is harder to access accidentally from outside the class.
+:::
+
+## Double Underscore and Name Mangling 2
+
+::::::::: {.runner data-runner="encap_4"}
+:::::: runner-head
+:::: {}
+::: runner-label
+Editable Python
+:::
+::::
+
+::: runner-actions
+<button class="btn primary run-btn">
+
+Run
+
+</button>
+
+<button class="btn reset-btn">
+
+Reset
+
+</button>
+:::
+::::::
+
+```{=html}
+<textarea class="codebox" spellcheck="false">class Person:
+    def __init__(self, first, last, age=18):
+        self._first = first
+        self._last = last
+        self.__age = age
+
+    def __str__(self):
+        return f&quot;First name is {self._first}, last name is {self._last}, age is {self.__age}&quot;
+p1 = Person(&quot;Jimmy&quot;, &quot;Green&quot;)
+print(p1)        
+</textarea>
+```
+
+::: monaco-host
+:::
+
+::: output-title
+Output
+:::
+
+```{=html}
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+```
+:::::::::
+
+Try to access __age directly in the code above.
+
+## What Happened? 1
+Trying to access `p1.__age` directly produces an `AttributeError`.
+
+Many Python objects have a `__dict__` attribute that stores their instance attributes.
+
+Let's inspect the object:
+
+::::::::: {.runner data-runner="encap_7"}
+:::::: runner-head
+:::: {}
+::: runner-label
+Editable Python
+:::
+::::
+
+::: runner-actions
+<button class="btn primary run-btn">
+
+Run
+
+</button>
+
+<button class="btn reset-btn">
+
+Reset
+
+</button>
+:::
+::::::
+
+```{=html}
+<textarea class="codebox" spellcheck="false">
+class Person:
+    def __init__(self, first, last, age=18):
+        self._first = first
+        self._last = last
+        self.__age = age
+
+    def __str__(self):
+        return f&quot;First name is {self._first}, last name is {self._last}, age is {self.__age}&quot;
+p1 = Person(&quot;Jimmy&quot;, &quot;Green&quot;)
+print(p1.__dict__)</textarea>
+```
+
+::: monaco-host
+:::
+
+::: output-title
+Output
+:::
+
+```{=html}
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+```
+:::::::::
+
+
+## What Happened? 2
+
+You should see that Python changed `__age` to a name similar to:
+
+``` python
+_Person__age
+```
+
+This process is called **name mangling**.
+```python
+class Person:
+    def __init__(self, first, last, age=18):
+        self._first = first
+        self._last = last
+        self.__age = age
+
+    def __str__(self):
+        return f"First name is {self._first}, last name is {self._last}, age is {self.__age}"
+p1 = Person("Jimmy", "Green")
+print(p1._Person__age)
+```
+
+
+## Controlled Access with Getter and Setter Methods
+
+
+::: concept-card
+A class can provide methods that control how its internal state is accessed and changed.
+:::
+
+::::::::: {.runner data-runner="encap_9"}
+:::::: runner-head
+:::: {}
+::: runner-label
+Editable Python
+:::
+::::
+
+::: runner-actions
+<button class="btn primary run-btn">
+
+Run
+
+</button>
+
+<button class="btn reset-btn">
+
+Reset
+
+</button>
+:::
+::::::
+
+```{=html}
+<textarea class="codebox" spellcheck="false">class Person:
+    def __init__(self, first, last, age=18):
+        self._first = first
+        self._last = last
+        self.__age = age
+
+    def get_age(self):
+        return self.__age
+
+    def set_age(self, age):
+        if not isinstance(age, int):
+            raise TypeError("Age must be an integer")
+
+        if age < 0:
+            raise ValueError("Age cannot be negative")
+
+        self.__age = age
+
+    def __str__(self):
+        return f"First name is {self._first}, last name is {self._last}, age is {self.__age}"
+
+
+p1 = Person("Jimmy", "Green")
+
+print(p1.get_age())
+
+p1.set_age(25)
+print(p1.get_age())    
+</textarea>
+```
+
+::: monaco-host
+:::
+
+::: output-title
+Output
+:::
+
+```{=html}
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+```
+:::::::::
+
+
+## Property
+
+::: concept-card
+Getter and setter methods work, but using them changes how we access an attribute:
+
+``` python
+p1.get_age()
+p1.set_age(25)
+```
+
+Python's `property()` function lets us keep the controlled getter/setter behavior while using normal attribute syntax:
+:::
+
+``` python
+p1.age
+p1.age = 25
+```
+
+## Creating a Property with `property()` 1
+
+The built-in `property()` function can connect a getter and setter to an attribute name:
+
+``` python
+age = property(get_age, set_age)
+```
+
+::::::::: {.runner data-runner="encap_12"}
+:::::: runner-head
+:::: {}
+::: runner-label
+Editable Python
+:::
+::::
+
+::: runner-actions
+<button class="btn primary run-btn">
+
+Run
+
+</button>
+
+<button class="btn reset-btn">
+
+Reset
+
+</button>
+:::
+::::::
+
+```{=html}
+<textarea class="codebox" spellcheck="false">class Person:
+    def __init__(self, first, last, age=18):
+        self._first = first
+        self._last = last
+        self.__age = age
+
+    def get_age(self):
+        print(&quot;get age method&quot;)
+        return self.__age
+
+    def set_age(self, age):
+        if not isinstance(age, int):
+            raise TypeError("Age must be an integer")
+
+        if age < 0:
+            raise ValueError("Age cannot be negative")
+
+        self.__age = age
+
+    age = property(get_age, set_age)
+    def __str__(self):
+        return f&quot;First name is {self._first}, last name is {self._last}, age is {self.__age}&quot;
+p1 = Person(&quot;Jimmy&quot;, &quot;Green&quot;)
+
+print(p1.age)
+
+p1.age = 25  
+print(p1.age)
+
+#p1.age = -5
+#print(p1.age)
+</textarea>
+```
+
+::: monaco-host
+:::
+
+::: output-title
+Output
+:::
+
+```{=html}
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+```
+:::::::::
+
+## Creating a Property with `property()` 2
+
+The object still stores the value in `__age`, but outside code can use the simpler syntax:
+
+``` python
+p1.age
+p1.age = 25
+```
+
+The property controls what happens when `age` is read or changed.
+
+## Property Decorators 1
+
+::: concept-card
+The `property()` function works, but Python provides a cleaner syntax using decorators.
+:::
+
+Instead of writing:
+
+``` python
+age = property(get_age, set_age)
+```
+
+we can use:
+
+``` python
+@property
+def age(self):
+    ...
+
+@age.setter
+def age(self, age):
+    ...
+```
+
+## In-Class Activity 
+
+::: activity-card
+Convert this version to use `@property` and `@age.setter`.
+:::
+
+::::::::: {.runner data-runner="encap_14"}
+:::::: runner-head
+:::: {}
+::: runner-label
+Editable Python
+:::
+::::
+
+::: runner-actions
+<button class="btn primary run-btn">
+
+Run
+
+</button>
+
+<button class="btn reset-btn">
+
+Reset
+
+</button>
+:::
+::::::
+
+```{=html}
+<textarea class="codebox" spellcheck="false"># Use the property decorator instead of property function
+class Person:
+    def __init__(self, first, last, age=18):
+        self._first = first
+        self._last = last
+        self.__age = age
+
+    # Place your code here
+    def age(self):
+        return self.__age
+
+    # Place your code here
+    def age(self, age):
+        if not isinstance(age, int):
+            raise TypeError("Age must be an integer")
+
+        if age < 0:
+            raise ValueError("Age cannot be negative")
+
+        self.__age = age
+    def __str__(self):
+        return f"First name is {self._first}, last name is {self._last}, age is {self.__age}"
+p1 = Person("Jimmy", "Green")
+
+print(p1.age)
+
+p1.age = 25
+print(p1.age)
+
+#p1.age = True
+#print(p1.age)        
+</textarea>
+```
+
+::: monaco-host
+:::
+
+::: output-title
+Output
+:::
+
+```{=html}
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+```
+:::::::::
+
+## Property Decorators 2
+
+The two versions provide the same idea:
+
+- `property(get_age, set_age)` makes the getter/setter relationship explicit.
+- `@property` and `@age.setter` provide a cleaner and more common Python syntax.
+
+In both cases, outside code uses normal attribute syntax while the class keeps control over access and modification.
+
+## Private-Style Helper Methods
+
+::: concept-card
+Double underscores can also be used with methods.
+
+These methods are often used as **helper methods** inside the class.
+:::
+
+::::::::: {.runner data-runner="encap_16"}
+:::::: runner-head
+:::: {}
+::: runner-label
+Editable Python
+:::
+::::
+
+::: runner-actions
+<button class="btn primary run-btn">
+
+Run
+
+</button>
+
+<button class="btn reset-btn">
+
+Reset
+
+</button>
+:::
+::::::
+
+```{=html}
+<textarea class="codebox" spellcheck="false">class Person:
+    def __init__(self, first, last, age=18):
+        self._first = first
+        self._last = last
+        self.__age = age
+
+    def __full_name(self):
+        return f&quot;{self._first} {self._last}&quot;
+
+
+    def __str__(self):
+        return f&quot;{self.__full_name()}, age {self.__age}&quot;
+p1 = Person(&quot;Jimmy&quot;, &quot;Green&quot;)
+
+#print(p1.__full_name())        
+</textarea>
+```
+
+::: monaco-host
+:::
+
+::: output-title
+Output
+:::
+
+```{=html}
+<pre class="output">Click Run to execute this Python code in the browser.</pre>
+```
+:::::::::
+
+## Summary {.section-title}
+
+::: summary-card
+**Encapsulation** means that an object owns and controls its internal state.
+
+In Python:
+
+- `_attribute` → non-public by **convention**
+- `__attribute` → uses **name mangling**
+- getter methods can provide controlled access
+- setter methods can validate changes
+- `property()` connects getter/setter methods to normal attribute syntax
+- `@property` and `@attribute.setter` provide a cleaner decorator syntax
+- helper methods can keep internal implementation details inside the class
+
+> **Encapsulation is not just hiding data. It allows a class to control how its internal state is accessed and changed.**
+:::
