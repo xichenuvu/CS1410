@@ -545,7 +545,7 @@ class Person:
 
     # Place your code here
     def age(self, age):
-        if not isinstance(age, int):
+        if type(age) != int:
             raise TypeError("Age must be an integer")
 
         if age < 0:
